@@ -750,13 +750,6 @@
   latitude: -20.4228
   longitude: -49.9728
   source_url: https://github.com/World-Wide-JUGs/GlobalWWJugs/blob/master/content/jugs/JavaNoroesteJUG.md
-- slug: JavaStudentUserGroup
-  name: Java Student User Group
-  country: Austria
-  website: https://java.wien/
-  latitude: 48.2082
-  longitude: 16.3738
-  source_url: https://github.com/World-Wide-JUGs/GlobalWWJugs/blob/master/content/jugs/JavaStudentUserGroup.md
 - slug: ViennaJSUG
   name: Java Student User Group Austria (Java Vienna)
   country: Austria
@@ -962,20 +955,13 @@
   name: Java User Group Goldstadt
   country: Germany
   website: https://gitlab.com/groups/jugpf
+  twitter: mkarg
   calendar: https://jugpf.gitlab.io/gitlab-pages/calendar.ics
+  founded_date: '2016-06-30'
   contact: Markus Karg
   latitude: 48.8922
   longitude: 8.6946
   source_url: https://github.com/World-Wide-JUGs/GlobalWWJugs/blob/master/content/jugs/GoldstadtJUG.md
-- slug: JUGPF
-  name: Java User Group Goldstadt
-  country: Germany
-  website: http://jugpf.gitlab.io/gitlab-pages/
-  twitter: mkarg
-  founded_date: '2016-06-30'
-  latitude: 48.896345
-  longitude: 8.703285
-  source_url: https://github.com/World-Wide-JUGs/GlobalWWJugs/blob/master/content/jugs/JUGPF.md
 - slug: GoettingenJUG
   name: Java User Group Göttingen (Java Stammtisch)
   country: Germany
@@ -1473,7 +1459,7 @@
   name: JUG CH Basel
   country: Switzerland
   website: https://www.jug.ch/
-  calendar: https://www.jug.ch/events/
+  calendar: https://www.jug.ch/events/basel/
   latitude: 47.5596
   longitude: 7.5886
   source_url: https://github.com/World-Wide-JUGs/GlobalWWJugs/blob/master/content/jugs/BaselJUG.md
@@ -1481,7 +1467,7 @@
   name: JUG CH Bern
   country: Switzerland
   website: https://www.jug.ch/
-  calendar: https://www.jug.ch/events/
+  calendar: https://www.jug.ch/events/bern/
   latitude: 46.9479
   longitude: 7.4474
   source_url: https://github.com/World-Wide-JUGs/GlobalWWJugs/blob/master/content/jugs/BernJUG.md
@@ -1489,7 +1475,7 @@
   name: JUG CH Luzern
   country: Switzerland
   website: https://www.jug.ch/
-  calendar: https://www.jug.ch/events/
+  calendar: https://www.jug.ch/events/luzern/
   latitude: 47.0502
   longitude: 8.3093
   source_url: https://github.com/World-Wide-JUGs/GlobalWWJugs/blob/master/content/jugs/LuzernJUG.md
@@ -1497,7 +1483,7 @@
   name: JUG CH St. Gallen
   country: Switzerland
   website: https://www.jug.ch/
-  calendar: https://www.jug.ch/events/
+  calendar: https://www.jug.ch/events/stgallen/
   latitude: 47.423
   longitude: 9.3716
   source_url: https://github.com/World-Wide-JUGs/GlobalWWJugs/blob/master/content/jugs/StGallenJUG.md
@@ -1505,7 +1491,7 @@
   name: JUG CH Zürich
   country: Switzerland
   website: https://www.jug.ch/
-  calendar: https://www.jug.ch/events/
+  calendar: https://www.jug.ch/events/zurich/
   latitude: 47.3769
   longitude: 8.5472
   source_url: https://github.com/World-Wide-JUGs/GlobalWWJugs/blob/master/content/jugs/ZurichJUG.md
