@@ -123,17 +123,17 @@ At the default similarity threshold of 0.55:
 
 The first result is the boring one: semantic search more than doubles precision compared to keywords. No surprise there. The fun part was the queries keyword search couldn't answer at all. "SDE working on Java services", "site reliability and production operations" and the incident-response sentence all got zero keyword results. Hybrid search put three highly relevant jobs at the top of each one.
 
-The second result is the one I was actually curious about. On its own, the requirements-only vector beats the full posting. In semantic-only search, `job_req_v1` scored 4.5 points higher on precision@5 than `job_full_v1`. Taking the max of both gave the best MRR, but slightly lower precision than requirements alone. My guess is that all the company prose pulls the vector towards "generic software job" and away from the specific skills people search for.
+The second result is the one I was actually curious about. In this eval, the requirements-only vector on its own beat the full posting. In semantic-only search, `job_req_v1` scored 4.5 points higher on precision@5 than `job_full_v1`. Taking the max of both gave the best MRR, but slightly lower precision than requirements alone. My guess is that all the company prose pulls the vector towards "generic software job" and away from the specific skills people search for.
 
 The third result kind of undid the second. In hybrid mode, the difference almost disappears. With the keyword bonus in place, the full-description vector on its own scored exactly the same as "max of both". Keyword hits already pin the obvious results to the top, and the vectors mostly just sort the long tail, where both strategies agree anyway.
 
-So for the search mode I actually ship, the second vector buys me almost nothing. I haven't deleted it yet, though, and the next two sections explain why.
+So in this eval, for the search mode I actually ship, the second vector bought me almost nothing. I haven't deleted it yet, though, and the next two sections explain why.
 
 ## What I can't claim from this
 
 While writing this up, I had to be careful about what these numbers really show.
 
-- The labels are partly estimated. I graded the first 341 judgements by hand. The rest were needed for results the first pass never saw, and I estimated those with rules I calibrated against my own grades. That's good enough to compare strategies against each other, but it's not a benchmark.
+- The labels are partly estimated. I graded the first 341 judgements by hand. The rest were needed for results the first pass never saw, and I estimated those with rules I calibrated against my own grades. So treat the comparison as exploratory. It's a useful hint about which strategy works better, not a benchmark, and I'd want more human review and a fresh holdout set before trusting it in production.
 - The jobs are synthetic. Real postings are longer, messier and full of boilerplate. If anything, that could help the requirements-only strategy *more* than my clean fixtures do.
 - Forty queries can't tell 0.825 apart from 0.830. The semantic-only gap is worth noticing. The hybrid gap is noise.
 - I tuned the threshold on the same data I'm reporting here. Which brings me to the part that surprised me.
@@ -160,7 +160,7 @@ So I left production at 0.55. I chose those three no-answer queries myself and t
 
 ## What I'd tell myself before starting
 
-1. **Measure what you embed.** In semantic-only search, the choice of text made a bigger difference than anything I would have tweaked in the model.
+1. **Measure what you embed.** In semantic-only search, just changing which text I embedded moved precision@5 by 4.5 points, without touching the model.
 2. **Embed the part that sounds like a search.** If you can only store one view of a document, pick the one closest to how people search. For jobs, that's the requirements, not the marketing.
 3. **Hybrid search hides a lot.** The keyword bonus smoothed over most of the difference between strategies. Nice for users, less nice when you're trying to justify a second vector.
 4. **A similarity score isn't a probability.** 0.74 between "marine biologist" and a data job is completely normal here. Set thresholds using queries that are supposed to fail.
