@@ -1,0 +1,25 @@
+name: Weekly Slack overview
+
+# Reads the LIVE feed, so it reports what readers can see, and commits nothing.
+# The feed holds the newest 30 posts, which covers a week with room to spare.
+
+on:
+  schedule:
+    - cron: "17 7 * * 1"    # Monday 09:17 CEST / 08:17 CET
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  overview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: scripts/notify
+      - uses: jbangdev/setup-jbang@v0.1.1
+      - name: Post the overview
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_GENERAL }}
+        run: jbang scripts/notify/SlackPosts.java weekly https://foojay.io/index.xml

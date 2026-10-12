@@ -217,6 +217,21 @@ jobs:
             test-results/
           retention-days: 5
 
+      # The live feed is still the PREVIOUS deploy here; announce (below) diffs
+      # it against this build's. A failed fetch leaves an empty file, which
+      # SlackPosts.java treats as "skip", never as "everything is new".
+      - name: Keep the previous and new feeds for the Slack announcement
+        run: |
+          mkdir feeds
+          cp public/index.xml feeds/current.xml
+          curl -fsS --max-time 30 "${{ steps.pages.outputs.base_url }}/index.xml" -o feeds/previous.xml || : > feeds/previous.xml
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: feeds
+          path: feeds/
+          retention-days: 1
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
@@ -232,3 +247,22 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+  # Tells #foojay-site-content about posts that were not on the previous deploy,
+  # so scheduled posts are announced when they go live, not when merged.
+  announce:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: scripts/notify
+      - uses: actions/download-artifact@v7
+        with:
+          name: feeds
+          path: feeds
+      - uses: jbangdev/setup-jbang@v0.1.1
+      - name: Announce new posts
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_CONTENT }}
+        run: jbang scripts/notify/SlackPosts.java new feeds/previous.xml feeds/current.xml

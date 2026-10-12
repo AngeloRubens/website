@@ -254,6 +254,16 @@ All run daily from `sync-external-content.yml`, commit their result, then
   See `worker/views/README.md`, and the read-counter convention below for why
   this exists rather than a hosted analytics service.
 
+### Slack announcements
+
+- **`notify/SlackPosts.java`** posts from the site's own RSS feed through two
+  incoming webhooks (secrets `SLACK_WEBHOOK_CONTENT`, `SLACK_WEBHOOK_GENERAL`);
+  unset, it prints and exits 0. **"New" is a diff, not remembered state**:
+  `build-deploy.yml` saves the live feed before deploying and the `announce`
+  job compares it with the new build's, so a scheduled post is announced when it
+  goes live. An empty previous feed skips rather than announcing everything.
+  `slack-weekly.yml` posts the last 7 days every Monday.
+
 ### Validators
 
 - **`scripts/validate/Frontmatter.java`** — PR-time content check run by
