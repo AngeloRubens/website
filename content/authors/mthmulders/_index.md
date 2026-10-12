@@ -6,7 +6,7 @@ bio: "Maarten is a solution architect, senior Java developer, and technical trai
 bluesky: "https://bsky.app/profile/mthmulders.bsky.social"
 mastodon: "https://mastodon.online/@mthmulders"
 linkedin: "https://linkedin.com/in/mthmulders/"
-github: ""
+github: "https://github.com/mthmulders"
 youtube: ""
 website: "https://x.com/mthmulders"
 ---
