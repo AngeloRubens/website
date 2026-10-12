@@ -13,10 +13,11 @@ categories:
   - "Security"
   - "Java"
 related_posts:
-  - "foojay-podcast-89"
   - "announcing-the-new-foojay"
+  - "keep-wordpress-if-youre-looking-for-trouble"
   - "asciidoc-support-on-foojay"
   - "diagrams-as-code-mermaid-support-on-foojay"
+  - "foojay-podcast-89"
 ---
 
 Foojay.io quietly moved off WordPress and onto Hugo, a static site generator. No more CMS login, no database, no admin panel — just Markdown and AsciiDoc files, built and deployed straight from GitHub. In this episode we dig into why that move happened, and into the bigger question behind it: is a traditional CMS still the right way to run a content site in 2026, or has static tooling caught up? Along the way we go through the real security numbers behind WordPress's plugin ecosystem — more than 10,000 vulnerabilities found in WordPress plugins since 2025 alone — and put very different static site generators head to head: Hugo and Jekyll, the veterans, versus Roq, the Java-and-Quarkus-based newcomer.
