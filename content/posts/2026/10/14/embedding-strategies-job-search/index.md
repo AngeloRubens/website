@@ -1,6 +1,6 @@
 ---
 title: "One Embedding per Job, or Two? Measuring Semantic Search in a Spring Boot Job Portal"
-date: "2026-01-01"
+date: "2026-10-14"
 description: "I stored two embeddings for every job in my Spring Boot job portal and measured which one finds the right jobs. One of them barely mattered, and my similarity threshold turned out to mean much less than I thought."
 authors:
   - "somil-garg"

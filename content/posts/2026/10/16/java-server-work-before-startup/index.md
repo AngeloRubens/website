@@ -1,6 +1,6 @@
 ---
 title: "A Smaller, Faster Java Server with a Spring-Style API"
-date: "2026-10-09"
+date: "2026-10-16"
 description: "Build a smaller native Java service with Spring-style transactions and dependency injection. Inspect the generated code and compare local Linux startup,..."
 authors: ["shai-almog"]
 image: "java-server-work-before-startup-d9b84f58b7.jpg"
@@ -407,7 +407,7 @@ Your web app can now use native desktop OS styling: macOS (Aqua), Windows (Fluen
 
 There is a smaller maps improvement too: names now follow the road geometry, with curved glyph placement on bends and upright text along straighter sections. Labels remain above route overlays, so the route does not hide the street you need to follow.
 
-![Road names follow the vector streets and remain visible over the route](maps-road-labels-e66e5ff84d.png)
+![Road names follow the vector streets and remain visible over the route](maps-road-labels-e66e5ff84d.jpg)
 
 *From the Maps guide. The renderer rejects placements that bend too sharply or collide with other labels.*
 
