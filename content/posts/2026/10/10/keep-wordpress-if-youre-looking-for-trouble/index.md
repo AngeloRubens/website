@@ -72,7 +72,7 @@ Here are a few examples:
 
 Some features don't even need an external service: static site generators have plugins too, and they only run at build time. Roq has a growing [marketplace](https://iamroq.dev/marketplace/) with plugins for search, sitemap, tagging, diagrams, and more.
 
-**Tip:** [Quarkus](https://quarkus.io/) provides an awesome way to create full-stack web components that integrate directly into your pages. Perfect for building your own services. And with Quarkus on serverless, they scale to zero, meaning they're practically free when not in use.
+**Tip:** [Quarkus](https://quarkus.io/) provides an awesome way to create [full-stack web components](https://iamroq.dev/posts/add-comments-web-component/) that integrate directly into your pages. Perfect for building your own services. And with Quarkus on serverless, they scale to zero, meaning they're practically free when not in use.
 
 *By the way, if this article were written with Roq instead of Hugo, these tips would render as proper admonition blocks out of the box 😉*
 
