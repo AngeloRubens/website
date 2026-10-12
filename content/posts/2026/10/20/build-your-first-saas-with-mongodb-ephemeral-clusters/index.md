@@ -1,6 +1,6 @@
 ---
 title: "Build Your First SaaS with MongoDB Ephemeral Clusters"
-date: "2026-10-13"
+date: "2026-10-20"
 description: "Provision a MongoDB Atlas Ephemeral Cluster with one API call, then have an AI coding agent build a full-stack Spring Boot and React job tracker on it."
 authors: ["tim-kelly"]
 image: "build-your-first-saas-mongodb-ephemeral-clusters-cover.jpg"
@@ -245,7 +245,7 @@ Exercise the core workflow:
 5. Edit its notes, then delete it.
 6. Confirm the total, interview, offer, and interview-rate statistics update correctly.
 
-![Screenshot of the Job Tracker "New application" modal, with fields for company, role, location, status, salary range and currency, job URL, tags, applied date, and notes.](ephemeral-saas-new-application-form.png)
+![Screenshot of the Job Tracker "New application" modal, with fields for company, role, location, status, salary range and currency, job URL, tags, applied date, and notes.](ephemeral-saas-new-application-form.jpg)
 
 At this stage, the ephemeral cluster has done its job: it has enabled a real, persistent prototype without front-loading infrastructure work. Iterate on the build prompt, data model, REST endpoints, and UI while the learning loop is still fast.
 
@@ -276,7 +276,7 @@ By following that link, you will be asked to either sign in or create an account
 
 After that, it is time to claim the cluster!
 
-![Screenshot of Atlas confirming "Cluster0 is now claimed," showing the organization, project, region, and cluster tier, plus a warning that the database is still open to all IP addresses and links to extend the agent with the MongoDB MCP server.](ephemeral-saas-atlas-cluster-claimed-confirmation.png)
+![Screenshot of Atlas confirming "Cluster0 is now claimed," showing the organization, project, region, and cluster tier, plus a warning that the database is still open to all IP addresses and links to extend the agent with the MongoDB MCP server.](ephemeral-saas-atlas-cluster-claimed-confirmation.jpg)
 
 With all that said and done, the ephemeral cluster is now a standard cluster and is ready to be interacted with, upgraded, and configured, like any other MongoDB Cluster.
 
@@ -305,4 +305,4 @@ The cluster is intentionally temporary, which makes experimentation low-friction
 
 Start with one API call. Build with a real database from the first prompt. Claim the cluster when the idea proves it deserves to live on.
 
-The full code for this application is available in this [GitHub repository](https://github.com/timotheekelly/job-tracker).
+The full code for this application is available in this [GitHub repository](https://github.com/mongodb-developer/saas-job-tracker).
