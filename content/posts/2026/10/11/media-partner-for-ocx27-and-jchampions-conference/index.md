@@ -2,6 +2,7 @@
 title: "Media Partner for OCX27 and jChampions Conference 2027"
 date: "2026-10-11"
 description: "Foojay is a media partner of OCX 2027 in Brussels and the jChampions Conference 2027 — dates, details, and how to submit a talk for each."
+image: "hero.jpg"
 authors:
   - "frankdelporte"
 categories:
