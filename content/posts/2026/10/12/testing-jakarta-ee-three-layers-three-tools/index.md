@@ -1,6 +1,6 @@
 ---
 title: "Testing Jakarta EE: Three Layers, Three Tools"
-date: "2026-01-01"
+date: "2026-10-12"
 description: "A guide to Simon Laden's three-part series on testing Jakarta EE with WeldInitiator, Arquillian and Testcontainers, and the question each tool answers."
 authors:
   - "dominika-tasarz"
