@@ -6,7 +6,7 @@ bio: "I am a Senior Technical Architect from India with over 18 years of experie
 bluesky: ""
 mastodon: ""
 linkedin: "http://linkedin.com/in/mahendra-rao-bandaru-8754432b"
-github: ""
+github: "https://github.com/bsmahi"
 youtube: ""
 website: "https://bs-mahi.medium.com/"
 ---
