@@ -34,7 +34,7 @@ This is no longer a roadmap promise. We have moved several clients from Adobe Co
 * **Azure Functions runtime.** BoxLang now runs serverless on AWS, Google Cloud and Microsoft Azure with one handler contract.
 * **Server fixation for scheduled tasks.** In a cluster, a job runs on exactly one server, every time.
 * **A CLI built for automation.** Project-level config discovery and machine-readable scheduler reports for scripts and agents.
-* **New interception points.** Observe every BoxLang class as it is created and initialized.
+* **New interception points.** Observe BoxLang class creation and initialization lifecycle events when those hooks fire, with expected exceptions such as superclass creation, `noInit` instantiation, and initialization failures.
 * **Hardened serverless routing** on Lambda and Google Cloud Functions, plus response and error handling that is consistent across clouds.
 * **Every 1.17.x hotfix included.** Upgrade once, get all six patch releases.
 * **Docs and skills refreshed across the board.** New sections for agentic development, BoxLang AI, browser automation and more.
@@ -86,9 +86,9 @@ task( "nightly-cleanup" )
 Here is what makes it production-grade:
 
 * **Distributed lock.** Nodes race to claim each run through a shared cache such as Redis. The first one wins, the rest skip.
-* **Crash-safe.** If the winning node dies mid-run, a surviving node takes the next scheduled run instead of the cluster being locked out.
-* **Sized to the real schedule.** Lock lifetime follows the task's actual cadence, including monthly and business-day tasks, so a second node cannot sneak in and re-run it the same day.
-* **Observable.** Task stats show which server won.
+* **Crash-safe.** If the winning node dies mid-run, its distributed lock remains active until the lock TTL expires. Other nodes may skip the next scheduled poll while that lock is still valid, and a surviving node can take over on a later poll after expiration.
+* **Sized to the real schedule.** For monthly and business-day schedules, the lock timeout is calculated from the time remaining until the next occurrence. Sub-minute schedules use a 60-minute default timeout, which can suppress later runs after a crash until that timeout expires.
+* **Observable.** Task statistics show the server where the task executes. The shared lock entry records the winning node through `serverHost` and `serverIp`.
 
 The scheduler also picked up a reliability pass: fixes for `.between()` with `.everyHour()` re-firing, a duplicate scheduler name error, a failure handler that could disable a task, and `everyMonthOn( 31 )` now landing on the last day of shorter months.
 
@@ -108,7 +108,7 @@ boxlang report.bxs
 
 # A full scheduler report for people, or as JSON for tools and agents
 boxlang schedule
-boxlang schedule --json | jq '.tasks'
+boxlang schedule --json | jq '.tasksFile.tasks'
 ```
 
 * **Per-project configuration.** Drop a `.boxlang.json` next to your scripts and the CLI picks it up. User-level settings live in your BoxLang home, and explicit flags and environment variables always win. We documented the whole lookup order, including how it compares to `.env` files.
