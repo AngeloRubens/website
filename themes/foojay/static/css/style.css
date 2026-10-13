@@ -892,7 +892,7 @@ a.event-strip__title:hover { color: var(--brand-accent-strong); text-decoration:
 .post-card { display: flex; flex-direction: column; gap: .6rem; min-width: 0; }
 .post-card-image {
   display: block; overflow: hidden; border-radius: var(--radius);
-  background: var(--surface-sunken); aspect-ratio: 300 / 200;
+  background: var(--surface-sunken); aspect-ratio: 1200 / 630;
   /* Positioning context for the .thumb-ph tile, which sits behind the image. */
   position: relative;
 }
@@ -1454,7 +1454,7 @@ a.event-strip__title:hover { color: var(--brand-accent-strong); text-decoration:
    is also (0,1,1), so it TIES with `.post-single img` and loses on source
    order alone; `height: 100%` survives only because the broad rule never
    declares a height. What does land is `margin: 1.5rem 0`, which pushes the
-   thumbnail down inside a box that is `aspect-ratio: 300 / 200` with
+   thumbnail down inside a box that is `aspect-ratio: 1200 / 630` with
    `overflow: hidden` -- so the card clips the bottom of the image and exposes
    a 1.5rem band of the .thumb-ph placeholder along the TOP, which reads as a
    coloured stripe above every related thumbnail (green on a Java post, since

@@ -63,7 +63,7 @@ authors:
 #
 # BEST FORMAT: 1600 x 900 (16:9), JPEG, under 300 KB.
 #   - 16:9 is exactly the big card on the home page, and it crops cleanly to
-#     the smaller cards (3:2) and to the social preview (1.91:1). All of those
+#     the smaller cards and the social preview (both 1.91:1). All of those
 #     crop from the CENTRE outwards, so keep whatever has to stay readable --
 #     text, logos, faces -- away from the edges.
 #   - 1600 px wide is for the social preview, which wants at least 1200. The
