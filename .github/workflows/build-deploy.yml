@@ -266,3 +266,18 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_CONTENT }}
         run: jbang scripts/notify/SlackPosts.java new feeds/previous.xml feeds/current.xml
+
+      # Queues the LinkedIn, Bluesky and Mastodon posts in Postiz, scheduled a
+      # while ahead so they can be edited or deleted there first. A failure here
+      # must not turn a finished deploy red.
+      - name: Queue social posts in Postiz
+        continue-on-error: true
+        env:
+          POSTIZ_API_KEY: ${{ secrets.POSTIZ_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_CONTENT }}
+          SLACK_MENTION_ID: ${{ secrets.SLACK_MENTION_ID }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          POSTIZ_BLUESKY_ID: cmv6nn7vd11m5qc0y8q81pm82
+          POSTIZ_LINKEDIN_ID: cmv6nlaxh11lfqc0ydkcpygyg
+        run: jbang scripts/notify/SocialPosts.java new feeds/previous.xml feeds/current.xml
