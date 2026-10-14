@@ -1,6 +1,6 @@
 ---
 title: "BoxLang 1.18.0 Released: Every Cloud, Every Node, Every Agent"
-date: "2026-01-01"
+date: "2026-10-21"
 description: "BoxLang 1.18.0 adds Azure Functions, cluster-safe scheduled tasks, a more automation-friendly CLI, and refreshed docs for developers and AI agents."
 authors:
   - "luis-majano"
