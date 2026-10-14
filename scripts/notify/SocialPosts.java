@@ -39,7 +39,10 @@ import java.util.Set;
  * Environment:
  *   ANTHROPIC_API_KEY  writes the texts
  *   SLACK_BOT_TOKEN    a bot with chat:write
- *   SLACK_MENTION_ID   the Slack member ID the message is sent to
+ *   SLACK_CHANNEL_ID   the channel the message is posted in; the bot must be a member
+ *                      of a private one. Without it the message goes to SLACK_MENTION_ID
+ *                      as a direct message.
+ *   SLACK_MENTION_ID   a Slack member ID, the fallback when there is no channel
  *
  * Any of them unset, or `--dry-run`: prints the texts and sends nothing.
  */
@@ -79,12 +82,12 @@ public class SocialPosts {
         }
         String claude = env("ANTHROPIC_API_KEY");
         String token = env("SLACK_BOT_TOKEN");
-        String user = env("SLACK_MENTION_ID");
+        String user = env("SLACK_CHANNEL_ID") != null ? env("SLACK_CHANNEL_ID")
+                : env("SLACK_MENTION_ID") == null ? null : env("SLACK_MENTION_ID").replaceAll("^<@|>$", "");
         if (!dryRun && (claude == null || token == null || user == null)) {
-            System.out.println("ANTHROPIC_API_KEY, SLACK_BOT_TOKEN or SLACK_MENTION_ID is not set; printing instead of sending.");
+            System.out.println("ANTHROPIC_API_KEY, SLACK_BOT_TOKEN or SLACK_CHANNEL_ID is not set; printing instead of sending.");
             dryRun = true;
         }
-        user = user == null ? null : user.replaceAll("^<@|>$", "");
 
         List<Post> previous = readFeed(a.get(1));
         if (previous.isEmpty()) {
@@ -134,7 +137,7 @@ public class SocialPosts {
         System.out.println("Sent to Slack.");
     }
 
-    /** A user ID as the channel opens the bot's direct message with that person. */
+    /** A channel ID, or a user ID, which opens the bot's direct message with that person. */
     static void post(String token, String user, String text) throws Exception {
         ObjectNode b = JSON.createObjectNode();
         b.put("channel", user);

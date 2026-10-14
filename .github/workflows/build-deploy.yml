@@ -275,5 +275,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_SOCIAL_POSTS_CHANNEL_ID }}
           SLACK_MENTION_ID: ${{ secrets.SLACK_MENTION_ID }}
         run: jbang scripts/notify/SocialPosts.java new feeds/previous.xml feeds/current.xml
