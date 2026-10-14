@@ -48,8 +48,8 @@ on:
     #
     # Minute 7 keeps these off the hour boundary GitHub's cron queue is busiest
     # on, like the other two schedules here.
-    - cron: "7 5 * * *"     # 07:07 CEST
-    - cron: "7 12 * * *"    # 14:07 CEST
+    - cron: "7 10 * * *"
+    - cron: "7 16 * * *"
   workflow_dispatch:
     inputs:
       force:
