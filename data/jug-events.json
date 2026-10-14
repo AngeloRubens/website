@@ -1,5 +1,5 @@
 {
-  "generatedAt" : "2026-10-13T07:49:49Z",
+  "generatedAt" : "2026-10-14T06:14:54Z",
   "source" : "iCal feeds published by the JUGs themselves (data/jugs.yaml `calendar`) and Meetup's iCal export for the groups that use it; venues from the feed's LOCATION or the schema.org JSON-LD on the event page -- see scripts/fetch/JugEvents.java",
   "groups" : [ {
     "slug" : "almaty-java-user-group",
@@ -96,14 +96,6 @@
     "source" : "meetup",
     "url" : "https://www.meetup.com/belgian-java-user-group/",
     "events" : [ {
-      "title" : "Patterns and Anti-Patterns of Agentic Engineering with Victor Rentea",
-      "url" : "https://www.meetup.com/belgian-java-user-group/events/316884744/",
-      "startTime" : "2026-10-13T19:00:00+02:00",
-      "endTime" : "2026-10-13T22:00:00+02:00",
-      "venue" : "Share & Fun",
-      "city" : "Bruxelles",
-      "online" : false
-    }, {
       "title" : "Breaking changes, there's a test for that! & Black Cats",
       "url" : "https://www.meetup.com/belgian-java-user-group/events/316783992/",
       "startTime" : "2026-10-21T17:45:00+02:00",
@@ -238,8 +230,8 @@
     }, {
       "title" : "November Meetup",
       "url" : "https://www.meetup.com/java-vienna/events/316166123/",
-      "startTime" : "2026-11-09T18:00:00+01:00",
-      "endTime" : "2026-11-09T21:00:00+01:00",
+      "startTime" : "2026-11-16T18:00:00+01:00",
+      "endTime" : "2026-11-16T21:00:00+01:00",
       "venue" : null,
       "city" : "Vienna",
       "online" : false
@@ -677,15 +669,7 @@
     "jug" : "MuensterJUG",
     "source" : "meetup",
     "url" : "https://www.meetup.com/java-usergroup-munster/",
-    "events" : [ {
-      "title" : "Java Concurrency: Exploring Structured Concurrency and Scoped ValuesPermalink",
-      "url" : "https://www.meetup.com/java-usergroup-munster/events/314228145/",
-      "startTime" : "2026-10-13T18:00:00+02:00",
-      "endTime" : "2026-10-13T19:30:00+02:00",
-      "venue" : "LVM Versicherung (Gebäudeteil 5)",
-      "city" : "Münster",
-      "online" : false
-    } ]
+    "events" : [ ]
   }, {
     "slug" : "JUG-Nurnberg",
     "name" : "JUG Nürnberg",
@@ -1038,14 +1022,6 @@
     "source" : "meetup",
     "url" : "https://www.meetup.com/toronto-java-users-group/",
     "events" : [ {
-      "title" : "7 Ways You Can Build an Amazing Dev Career in the AI Era",
-      "url" : "https://www.meetup.com/toronto-java-users-group/events/316707940/",
-      "startTime" : "2026-10-13T18:30:00-04:00",
-      "endTime" : "2026-10-13T20:30:00-04:00",
-      "venue" : "Intuit",
-      "city" : "Toronto",
-      "online" : false
-    }, {
       "title" : "Legacy Code Doesn't Have to Suck",
       "url" : "https://www.meetup.com/toronto-java-users-group/events/316878883/",
       "startTime" : "2026-10-29T18:30:00-04:00",
