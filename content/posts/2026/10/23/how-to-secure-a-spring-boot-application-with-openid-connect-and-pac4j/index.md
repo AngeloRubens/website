@@ -1,6 +1,6 @@
 ---
 title: "How to Secure a Spring Boot Application with OpenID Connect and pac4j"
-date: "2026-01-01"
+date: "2026-10-23"
 description: "Add OpenID Connect login to Spring Boot with pac4j: Maven setup, provider configuration, user profiles and logout."
 authors:
   - "jerome-leleu"
