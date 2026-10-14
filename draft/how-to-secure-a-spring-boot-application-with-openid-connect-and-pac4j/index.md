@@ -4,7 +4,7 @@ date: "2026-01-01"
 description: "Add OpenID Connect login to Spring Boot with pac4j: Maven setup, provider configuration, user profiles and logout."
 authors:
   - "jerome-leleu"
-image: "spring-boot-oidc-pac4j.png"
+image: "spring-boot-oidc-pac4j.jpg"
 categories:
   - "Java"
   - "Spring"
