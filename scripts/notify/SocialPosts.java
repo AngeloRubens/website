@@ -165,7 +165,7 @@ public class SocialPosts {
                     .append(" mention. If no handle or link is provided for an author, use the plain name without inventing a handle.\n");
             for (Author au : authors) {
                 String handle = switch (pl.id()) {
-                    case "bluesky" -> au.bluesky().replace("https://bsky.app/profile/", "@");
+                    case "bluesky" -> blueskyMention(au.bluesky());
                     case "mastodon" -> mastodonMention(au.mastodon());
                     default -> "@" + au.name(); // LinkedIn has no text handles
                 };
@@ -194,6 +194,7 @@ public class SocialPosts {
                 Don't go nuts in the wording, keep it simple, no exaggerations.
                 Make it engaging but keep it concise.
                 Make sure to include a link to the original article.
+                Never put a link or an @mention between parentheses.
                 You can include extra relevant hashtags, but only a few, and add them at the end of the post.
 
                 %s
@@ -201,10 +202,10 @@ public class SocialPosts {
                 Answer with the post text only, nothing before or after it.""".formatted(
                 pl.label(), pl.max(), p.title(), p.link(), article, who, pl.extra());
 
-        String text = ask(key, prompt);
+        String text = unwrapLinks(ask(key, prompt));
         if (text.length() > pl.max()) {
-            text = ask(key, prompt + "\n\nYour previous answer was " + text.length() + " characters. The limit is "
-                    + pl.max() + ". Shorten it, keeping the link:\n" + text);
+            text = unwrapLinks(ask(key, prompt + "\n\nYour previous answer was " + text.length() + " characters. The limit is "
+                    + pl.max() + ". Shorten it, keeping the link:\n" + text));
         }
         if (text.length() > pl.max()) {
             throw new IllegalStateException(pl.label() + " text is " + text.length() + " characters, over " + pl.max());
@@ -269,6 +270,21 @@ public class SocialPosts {
     static boolean isMastodon(String href, String host) {
         return href.matches("https?://[^/]+/@[^/]+/?")
                 && NOT_MASTODON.stream().noneMatch(h -> host.equals(h) || host.endsWith("." + h));
+    }
+
+    static final String LINK_OR_MENTION =
+            "https?://[^\\s()]+|@[\\w-]+(?:\\.[\\w-]+)*(?:@[\\w-]+(?:\\.[\\w-]+)*)?";
+
+    /** A parenthesis glued to a link or mention is read as part of it, so give it a space. */
+    static String unwrapLinks(String text) {
+        return text.replaceAll("\\((?=" + LINK_OR_MENTION + ")", "( ")
+                .replaceAll("(" + LINK_OR_MENTION + ")\\)", "$1 )");
+    }
+
+    static String blueskyMention(String url) {
+        if (url == null || url.isBlank()) return "";
+        String handle = url.replaceFirst("^https?://(www\\.)?bsky\\.app/profile/", "").replaceAll("/.*$", "");
+        return handle.isEmpty() ? url : "@" + handle.replaceFirst("^@", "");
     }
 
     static String mastodonMention(String url) {
