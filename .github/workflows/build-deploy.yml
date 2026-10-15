@@ -267,13 +267,16 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_CONTENT }}
         run: jbang scripts/notify/SlackPosts.java new feeds/previous.xml feeds/current.xml
 
-      # Sends the Mastodon, Bluesky and LinkedIn texts for each new post as a
-      # direct message, to copy and paste. A failure here must not turn a
-      # finished deploy red.
-      - name: Send social post texts
+      # Posts each new article to Bluesky and Mastodon, and sends the LinkedIn
+      # text to Slack to copy. A failure here must not turn a finished deploy red.
+      - name: Post to social media
         continue-on-error: true
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          MASTODON_TOKEN: ${{ secrets.MASTODON_TOKEN }}
+          MASTODON_INSTANCE: ${{ vars.MASTODON_INSTANCE }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_SOCIAL_POSTS_CHANNEL_ID }}
           SLACK_MENTION_ID: ${{ secrets.SLACK_MENTION_ID }}

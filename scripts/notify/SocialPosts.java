@@ -11,24 +11,38 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.w3c.dom.NodeList;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Writes a Mastodon, Bluesky and LinkedIn text for every post that went live,
- * with Claude working from the article itself, and sends them as a Slack direct
- * message, each in a code block so it can be copied as it is.
+ * with Claude working from the article itself. Mastodon and Bluesky are posted
+ * directly; LinkedIn has no usable API, so its text goes to Slack in a code
+ * block to copy, with links to what was posted. A platform that fails or has no
+ * credentials falls back to its own text in that Slack message.
  *
  *   new <previous.xml> <current.xml>   posts in current that previous lacks
  *
@@ -37,14 +51,18 @@ import java.util.Set;
  * writing texts for the whole feed.
  *
  * Environment:
- *   ANTHROPIC_API_KEY  writes the texts
- *   SLACK_BOT_TOKEN    a bot with chat:write
- *   SLACK_CHANNEL_ID   the channel the message is posted in; the bot must be a member
- *                      of a private one. Without it the message goes to SLACK_MENTION_ID
- *                      as a direct message.
- *   SLACK_MENTION_ID   a Slack member ID, the fallback when there is no channel
+ *   ANTHROPIC_API_KEY      writes the texts
+ *   BLUESKY_HANDLE         the account to post as, e.g. foojay.io
+ *   BLUESKY_APP_PASSWORD   an app password for it, not the login password
+ *   MASTODON_TOKEN         an access token with write:statuses
+ *   MASTODON_INSTANCE      defaults to https://foojay.social
+ *   SLACK_BOT_TOKEN        a bot with chat:write
+ *   SLACK_CHANNEL_ID       the channel the message is posted in; the bot must be a member
+ *                          of a private one. Without it the message goes to SLACK_MENTION_ID
+ *                          as a direct message.
+ *   SLACK_MENTION_ID       a Slack member ID, the fallback when there is no channel
  *
- * Any of them unset, or `--dry-run`: prints the texts and sends nothing.
+ * Anything unset is printed instead of sent; `--dry-run` posts nothing at all.
  */
 public class SocialPosts {
 
@@ -55,7 +73,8 @@ public class SocialPosts {
     record Platform(String id, String label, int max, String extra) {}
 
     static final ObjectMapper JSON = new ObjectMapper();
-    static final HttpClient HTTP = HttpClient.newHttpClient();
+    static final HttpClient HTTP = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NORMAL).build();
+    static final int BLUESKY_IMAGE_LIMIT = 900_000;
     static final int MAX_NEW = 5;
     static final int MAX_ARTICLE_CHARS = 8000;
     static final String MODEL = "claude-sonnet-5-5";
@@ -84,8 +103,8 @@ public class SocialPosts {
         String token = env("SLACK_BOT_TOKEN");
         String user = env("SLACK_CHANNEL_ID") != null ? env("SLACK_CHANNEL_ID")
                 : env("SLACK_MENTION_ID") == null ? null : env("SLACK_MENTION_ID").replaceAll("^<@|>$", "");
-        if (!dryRun && (claude == null || token == null || user == null)) {
-            System.out.println("ANTHROPIC_API_KEY, SLACK_BOT_TOKEN or SLACK_CHANNEL_ID is not set; printing instead of sending.");
+        if (!dryRun && claude == null) {
+            System.out.println("ANTHROPIC_API_KEY is not set; printing instead of posting.");
             dryRun = true;
         }
 
@@ -127,14 +146,199 @@ public class SocialPosts {
         for (Platform pl : PLATFORMS) {
             String text = claudeKey == null ? "(not generated: ANTHROPIC_API_KEY is not set)"
                     : write(claudeKey, pl, p, authors, article);
-            message.append("\n*").append(pl.label()).append("* (").append(text.length()).append("/").append(pl.max())
-                    .append(")\n```\n").append(text.replace("```", "'''")).append("\n```\n");
+            String posted = null, problem = "";
+            if (!dryRun && !pl.id().equals("linkedin")) {
+                try {
+                    posted = pl.id().equals("bluesky") ? postBluesky(text, p, page) : postMastodon(text, p);
+                    if (posted == null) problem = " - not posted, no credentials set";
+                } catch (Exception e) {
+                    problem = " - not posted, " + esc(String.valueOf(e.getMessage()));
+                    System.err.println(pl.label() + " failed for " + p.link() + ": " + e.getMessage());
+                }
+            }
+            if (posted != null) {
+                message.append("\n*").append(pl.label()).append("* posted: ").append(posted).append("\n");
+            } else {
+                message.append("\n*").append(pl.label()).append("* (").append(text.length()).append("/").append(pl.max())
+                        .append(")").append(problem).append("\n```\n").append(text.replace("```", "'''")).append("\n```\n");
+            }
         }
 
         System.out.println("=== " + p.link() + "\n" + message);
         if (dryRun) return;
+        if (token == null || user == null) {
+            System.out.println("SLACK_BOT_TOKEN or SLACK_CHANNEL_ID is not set; not sent to Slack.");
+            return;
+        }
         post(token, user, message.toString());
         System.out.println("Sent to Slack.");
+    }
+
+    /** Returns the URL of the new post, or null when there are no credentials. */
+    static String postMastodon(String text, Post p) throws Exception {
+        String token = env("MASTODON_TOKEN");
+        if (token == null) return null;
+        String instance = env("MASTODON_INSTANCE") == null ? "https://foojay.social" : env("MASTODON_INSTANCE").replaceAll("/$", "");
+        ObjectNode b = JSON.createObjectNode();
+        b.put("status", text);
+        b.put("visibility", "public");
+        b.put("language", "en");
+        // Mastodon builds the preview card from the page's og: tags by itself.
+        // The key makes a re-run of the same deploy return the first post, not a second.
+        HttpResponse<String> r = HTTP.send(
+                HttpRequest.newBuilder(URI.create(instance + "/api/v1/statuses")).timeout(Duration.ofSeconds(30))
+                        .header("Authorization", "Bearer " + token)
+                        .header("Idempotency-Key", "foojay-" + p.link())
+                        .header("Content-Type", "application/json")
+                        .POST(HttpRequest.BodyPublishers.ofString(JSON.writeValueAsString(b))).build(),
+                HttpResponse.BodyHandlers.ofString());
+        if (r.statusCode() != 200) throw new IllegalStateException("Mastodon answered " + r.statusCode() + ": " + r.body());
+        return JSON.readTree(r.body()).path("url").asText();
+    }
+
+    /**
+     * Bluesky does not recognise links, mentions or hashtags in text: each needs
+     * a facet with UTF-8 byte offsets, and the link card and its thumbnail are
+     * ours to build from the page's og: tags. Returns the post's URL, or null
+     * when there are no credentials.
+     */
+    static String postBluesky(String text, Post p, Document page) throws Exception {
+        String handle = env("BLUESKY_HANDLE"), password = env("BLUESKY_APP_PASSWORD");
+        if (handle == null || password == null) return null;
+        String pds = "https://bsky.social/xrpc/";
+
+        ObjectNode login = JSON.createObjectNode();
+        login.put("identifier", handle);
+        login.put("password", password);
+        JsonNode session = JSON.readTree(bsky(pds + "com.atproto.server.createSession", null, "application/json",
+                HttpRequest.BodyPublishers.ofString(JSON.writeValueAsString(login))));
+        String jwt = session.path("accessJwt").asText();
+
+        // A full URL would eat the 300 characters, so the text shows a short form of it.
+        Matcher m = Pattern.compile("https?://\\S+").matcher(text);
+        StringBuilder shown = new StringBuilder();
+        List<String[]> links = new ArrayList<>();
+        while (m.find()) {
+            String url = m.group().replaceAll("[.,;:!?)]+$", "");
+            String display = url.replaceFirst("^https?://(www\\.)?", "");
+            if (display.length() > 25) display = display.substring(0, 22) + "...";
+            links.add(new String[]{display, url});
+            m.appendReplacement(shown, Matcher.quoteReplacement(display + m.group().substring(url.length())));
+        }
+        m.appendTail(shown);
+        String out = shown.toString();
+
+        var facets = JSON.createArrayNode();
+        for (String[] l : links) {
+            int at = out.indexOf(l[0]);
+            if (at >= 0) facet(facets, out, at, at + l[0].length(), "link").put("uri", l[1]);
+        }
+        Matcher mention = Pattern.compile("(?<![\\w/])@([a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)+)").matcher(out);
+        while (mention.find()) {
+            String did = resolveHandle(mention.group(1));
+            if (did != null) facet(facets, out, mention.start(), mention.end(), "mention").put("did", did);
+        }
+        Matcher tag = Pattern.compile("(?<![\\w/#&])#([\\p{L}\\p{N}_]*\\p{L}[\\p{L}\\p{N}_]*)").matcher(out);
+        while (tag.find()) facet(facets, out, tag.start(), tag.end(), "tag").put("tag", tag.group(1));
+
+        ObjectNode record = JSON.createObjectNode();
+        record.put("$type", "app.bsky.feed.post");
+        record.put("text", out);
+        record.put("createdAt", Instant.now().toString());
+        record.putArray("langs").add("en");
+        record.set("facets", facets);
+        ObjectNode card = record.putObject("embed");
+        card.put("$type", "app.bsky.embed.external");
+        ObjectNode ext = card.putObject("external");
+        ext.put("uri", p.link());
+        ext.put("title", meta(page, "og:title", p.title()));
+        ext.put("description", meta(page, "og:description", p.description()));
+        String image = page.select("meta[property=og:image]").attr("abs:content");
+        if (!image.isEmpty()) {
+            try {
+                byte[] thumb = thumbnail(image);
+                if (thumb != null) {
+                    ext.set("thumb", JSON.readTree(bsky(pds + "com.atproto.repo.uploadBlob", jwt, "image/jpeg",
+                            HttpRequest.BodyPublishers.ofByteArray(thumb))).path("blob"));
+                }
+            } catch (Exception e) {
+                System.err.println("Bluesky thumbnail skipped for " + p.link() + ": " + e.getMessage());
+            }
+        }
+
+        ObjectNode body = JSON.createObjectNode();
+        body.put("repo", session.path("did").asText());
+        body.put("collection", "app.bsky.feed.post");
+        body.set("record", record);
+        String uri = JSON.readTree(bsky(pds + "com.atproto.repo.createRecord", jwt, "application/json",
+                HttpRequest.BodyPublishers.ofString(JSON.writeValueAsString(body)))).path("uri").asText();
+        return "https://bsky.app/profile/" + session.path("handle").asText(handle) + "/post/" + uri.substring(uri.lastIndexOf('/') + 1);
+    }
+
+    /** Adds a facet over [from, to) and returns its feature, for the caller to fill in. */
+    static ObjectNode facet(com.fasterxml.jackson.databind.node.ArrayNode facets, String text, int from, int to, String kind) {
+        ObjectNode f = facets.addObject();
+        ObjectNode index = f.putObject("index");
+        index.put("byteStart", text.substring(0, from).getBytes(StandardCharsets.UTF_8).length);
+        index.put("byteEnd", text.substring(0, to).getBytes(StandardCharsets.UTF_8).length);
+        return f.putArray("features").addObject().put("$type", "app.bsky.richtext.facet#" + kind);
+    }
+
+    /** A handle that does not resolve stays plain text rather than failing the post. */
+    static String resolveHandle(String handle) {
+        try {
+            HttpResponse<String> r = HTTP.send(HttpRequest.newBuilder(URI.create(
+                            "https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle?handle=" + handle))
+                    .timeout(Duration.ofSeconds(15)).build(), HttpResponse.BodyHandlers.ofString());
+            return r.statusCode() == 200 ? JSON.readTree(r.body()).path("did").asText(null) : null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    static String bsky(String url, String jwt, String contentType, HttpRequest.BodyPublisher body) throws Exception {
+        HttpRequest.Builder b = HttpRequest.newBuilder(URI.create(url)).timeout(Duration.ofSeconds(60))
+                .header("Content-Type", contentType).POST(body);
+        if (jwt != null) b.header("Authorization", "Bearer " + jwt);
+        HttpResponse<String> r = HTTP.send(b.build(), HttpResponse.BodyHandlers.ofString());
+        if (r.statusCode() != 200) throw new IllegalStateException("Bluesky answered " + r.statusCode() + ": " + r.body());
+        return r.body();
+    }
+
+    static String meta(Document page, String property, String fallback) {
+        String v = page.select("meta[property=" + property + "]").attr("content").trim();
+        return v.isEmpty() ? fallback : v;
+    }
+
+    /** Bluesky rejects blobs over about 1 MB, so shrink the cover until it fits. */
+    static byte[] thumbnail(String url) throws Exception {
+        System.setProperty("java.awt.headless", "true");
+        HttpResponse<byte[]> r = HTTP.send(HttpRequest.newBuilder(URI.create(url)).timeout(Duration.ofSeconds(30))
+                .header("User-Agent", "foojay.io").build(), HttpResponse.BodyHandlers.ofByteArray());
+        if (r.statusCode() != 200) throw new IllegalStateException(url + " answered " + r.statusCode());
+        BufferedImage src = ImageIO.read(new ByteArrayInputStream(r.body()));
+        if (src == null) throw new IllegalStateException("not a readable image: " + url);
+        int w = Math.min(src.getWidth(), 1200), h = Math.max(1, src.getHeight() * w / src.getWidth());
+        BufferedImage rgb = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        var g = rgb.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, w, h);
+        g.drawImage(src.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH), 0, 0, null);
+        g.dispose();
+        for (float q : new float[]{0.85f, 0.7f, 0.55f, 0.4f}) {
+            ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();
+            ImageWriteParam param = writer.getDefaultWriteParam();
+            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            param.setCompressionQuality(q);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            try (var ios = new MemoryCacheImageOutputStream(bytes)) {
+                writer.setOutput(ios);
+                writer.write(null, new IIOImage(rgb, null, null), param);
+            }
+            writer.dispose();
+            if (bytes.size() <= BLUESKY_IMAGE_LIMIT) return bytes.toByteArray();
+        }
+        return null;
     }
 
     /** A channel ID, or a user ID, which opens the bot's direct message with that person. */
