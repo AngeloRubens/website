@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -41,7 +42,7 @@ import java.util.regex.Pattern;
  * Writes a Mastodon, Bluesky and LinkedIn text for every post that went live,
  * with Claude working from the article itself. Mastodon and Bluesky are posted
  * directly; LinkedIn has no usable API, so its text goes to Slack in a code
- * block to copy, with links to what was posted. A platform that fails or has no
+ * block plus a link that opens LinkedIn's composer prefilled, with links to what was posted. A platform that fails or has no
  * credentials falls back to its own text in that Slack message.
  *
  *   new <previous.xml> <current.xml>   posts in current that previous lacks
@@ -160,7 +161,13 @@ public class SocialPosts {
                 message.append("\n*").append(pl.label()).append("* posted: ").append(posted).append("\n");
             } else {
                 message.append("\n*").append(pl.label()).append("* (").append(text.length()).append("/").append(pl.max())
-                        .append(")").append(problem).append("\n```\n").append(text.replace("```", "'''")).append("\n```\n");
+                        .append(")").append(problem);
+                if (pl.id().equals("linkedin")) {
+                    // The composer opens prefilled; the @mentions still have to be picked by hand.
+                    message.append(" <https://www.linkedin.com/feed/?shareActive=true&text=")
+                            .append(URLEncoder.encode(text, StandardCharsets.UTF_8).replace("+", "%20")).append("|Open in LinkedIn>");
+                }
+                message.append("\n```\n").append(text.replace("```", "'''")).append("\n```\n");
             }
         }
 
