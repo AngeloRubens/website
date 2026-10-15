@@ -2,6 +2,7 @@
 title: "Java Stream Gatherers: From Built-in Patterns to Custom Pipeline Mechanics"
 date: "2026-10-21"
 description: "Explore Java Stream Gatherers (JEP 485) from practical built-in patterns like windowing and concurrent mapping to authoring your own custom stateful pipeline components."
+image: "StreamGatherers.jpg"
 authors:
   - "mahendra1413"
 categories:
