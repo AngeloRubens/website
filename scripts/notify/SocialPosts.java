@@ -163,8 +163,8 @@ public class SocialPosts {
                 message.append("\n*").append(pl.label()).append("* (").append(text.length()).append("/").append(pl.max())
                         .append(")").append(problem);
                 if (pl.id().equals("linkedin")) {
-                    // The composer opens prefilled; the @mentions still have to be picked by hand.
-                    message.append(" <https://www.linkedin.com/feed/?shareActive=true&text=")
+                    // The page's own composer, so it posts as the page; the @mentions still have to be picked by hand.
+                    message.append(" <https://www.linkedin.com/company/98327419/admin/page-posts/published/?share=true&text=")
                             .append(URLEncoder.encode(text, StandardCharsets.UTF_8).replace("+", "%20")).append("|Open in LinkedIn>");
                 }
                 message.append("\n```\n").append(text.replace("```", "'''")).append("\n```\n");
