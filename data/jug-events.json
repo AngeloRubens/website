@@ -1,5 +1,5 @@
 {
-  "generatedAt" : "2026-10-15T05:58:20Z",
+  "generatedAt" : "2026-10-16T05:57:01Z",
   "source" : "iCal feeds published by the JUGs themselves (data/jugs.yaml `calendar`) and Meetup's iCal export for the groups that use it; venues from the feed's LOCATION or the schema.org JSON-LD on the event page -- see scripts/fetch/JugEvents.java",
   "groups" : [ {
     "slug" : "almaty-java-user-group",
@@ -416,6 +416,14 @@
       "url" : "https://www.jug-da.de/2026/11/ADHS/",
       "startTime" : "2026-11-19T18:30:00+01:00",
       "endTime" : "2026-11-19T20:30:00+01:00",
+      "venue" : "andrena objects",
+      "city" : "Darmstadt",
+      "online" : null
+    }, {
+      "title" : "JUG DA: Eine Architektur, viele Sichten - Mit Bausteinsicht vom Modell zum Diagramm und wieder zurück (Gerd Aschemann, Falk Sippach)",
+      "url" : "https://www.jug-da.de/2026/12/Bausteinsicht/",
+      "startTime" : "2026-12-10T18:30:00+01:00",
+      "endTime" : "2026-12-10T20:30:00+01:00",
       "venue" : "tbd",
       "city" : null,
       "online" : null
@@ -911,14 +919,6 @@
     "source" : "meetup",
     "url" : "https://www.meetup.com/montreal-jug/",
     "events" : [ {
-      "title" : "Developer Career Masterplan with Bruno Souza",
-      "url" : "https://www.meetup.com/montreal-jug/events/316859533/",
-      "startTime" : "2026-10-15T17:30:00-04:00",
-      "endTime" : "2026-10-15T20:00:00-04:00",
-      "venue" : "McGill University",
-      "city" : "Montréal",
-      "online" : false
-    }, {
       "title" : "Présentations éclairs de la communauté",
       "url" : "https://www.meetup.com/montreal-jug/events/316679816/",
       "startTime" : "2026-11-05T17:30:00-05:00",
@@ -1089,14 +1089,6 @@
     "jug" : "WarsawJUG",
     "source" : "meetup",
     "url" : "https://www.meetup.com/Warszawa-JUG/",
-    "events" : [ {
-      "title" : "332. WJUG – Piwowarek/Fedorka Netflix Edition",
-      "url" : "https://www.meetup.com/warszawa-jug/events/316852070/",
-      "startTime" : "2026-10-15T18:00:00+02:00",
-      "endTime" : "2026-10-15T21:00:00+02:00",
-      "venue" : "Netflix Warsaw",
-      "city" : "Warsaw",
-      "online" : false
-    } ]
+    "events" : [ ]
   } ]
 }
