@@ -133,6 +133,14 @@ public class SocialPosts {
             } catch (Exception e) {
                 failures++;
                 System.err.println("Failed for " + p.link() + ": " + e.getMessage());
+                System.out.println("::warning title=Social post failed::" + p.link() + ": " + e.getMessage());
+                if (!dryRun && token != null && user != null) {
+                    try {
+                        post(token, user, "*New on Foojay.io:* <" + p.link() + "|" + esc(p.title()) + ">\nSocial texts failed: " + esc(String.valueOf(e.getMessage())));
+                    } catch (Exception ignored) {
+                        // the warning above is all that is left
+                    }
+                }
             }
         }
         if (failures > 0) System.exit(1);
@@ -144,10 +152,22 @@ public class SocialPosts {
         String article = articleText(page, p);
 
         StringBuilder message = new StringBuilder("*New on Foojay.io:* <" + p.link() + "|" + esc(p.title()) + ">\n");
+        if (!authors.isEmpty()) {
+            message.append("by ").append(esc(String.join(", ", authors.stream().map(Author::name).toList()))).append("\n");
+        }
+        int failed = 0;
         for (Platform pl : PLATFORMS) {
-            String text = claudeKey == null ? "(not generated: ANTHROPIC_API_KEY is not set)"
-                    : write(claudeKey, pl, p, authors, article);
-            String posted = null, problem = "";
+            String text, posted = null, problem = "";
+            try {
+                text = claudeKey == null ? "(not generated: ANTHROPIC_API_KEY is not set)"
+                        : write(claudeKey, pl, p, authors, article);
+            } catch (Exception e) {
+                // One platform's text must not cost the other platforms or the Slack message.
+                failed++;
+                System.err.println(pl.label() + " text failed for " + p.link() + ": " + e.getMessage());
+                message.append("\n*").append(pl.label()).append("* - no text written, ").append(esc(String.valueOf(e.getMessage()))).append("\n");
+                continue;
+            }
             if (!dryRun && !pl.id().equals("linkedin")) {
                 try {
                     posted = pl.id().equals("bluesky") ? postBluesky(text, p, page) : postMastodon(text, p);
@@ -160,7 +180,7 @@ public class SocialPosts {
             if (posted != null) {
                 message.append("\n*").append(pl.label()).append("* posted: ").append(posted).append("\n");
             } else {
-                message.append("\n*").append(pl.label()).append("* (").append(text.length()).append("/").append(pl.max())
+                message.append("\n*").append(pl.label()).append("* (").append(length(pl, text)).append("/").append(pl.max())
                         .append(")").append(problem);
                 if (pl.id().equals("linkedin")) {
                     // The page's own composer, so it posts as the page; the @mentions still have to be picked by hand.
@@ -179,6 +199,7 @@ public class SocialPosts {
         }
         post(token, user, message.toString());
         System.out.println("Sent to Slack.");
+        if (failed > 0) throw new IllegalStateException(failed + " platform text(s) failed for " + p.link());
     }
 
     /** Returns the URL of the new post, or null when there are no credentials. */
@@ -221,19 +242,8 @@ public class SocialPosts {
                 HttpRequest.BodyPublishers.ofString(JSON.writeValueAsString(login))));
         String jwt = session.path("accessJwt").asText();
 
-        // A full URL would eat the 300 characters, so the text shows a short form of it.
-        Matcher m = Pattern.compile("https?://\\S+").matcher(text);
-        StringBuilder shown = new StringBuilder();
         List<String[]> links = new ArrayList<>();
-        while (m.find()) {
-            String url = m.group().replaceAll("[.,;:!?)]+$", "");
-            String display = url.replaceFirst("^https?://(www\\.)?", "");
-            if (display.length() > 25) display = display.substring(0, 22) + "...";
-            links.add(new String[]{display, url});
-            m.appendReplacement(shown, Matcher.quoteReplacement(display + m.group().substring(url.length())));
-        }
-        m.appendTail(shown);
-        String out = shown.toString();
+        String out = shortenLinks(text, links);
 
         var facets = JSON.createArrayNode();
         for (String[] l : links) {
@@ -280,6 +290,31 @@ public class SocialPosts {
         String uri = JSON.readTree(bsky(pds + "com.atproto.repo.createRecord", jwt, "application/json",
                 HttpRequest.BodyPublishers.ofString(JSON.writeValueAsString(body)))).path("uri").asText();
         return "https://bsky.app/profile/" + session.path("handle").asText(handle) + "/post/" + uri.substring(uri.lastIndexOf('/') + 1);
+    }
+
+    /** Bluesky shows a short form of each link, so a full URL does not eat the 300 characters. */
+    static String shortenLinks(String text, List<String[]> links) {
+        Matcher m = Pattern.compile("https?://\\S+").matcher(text);
+        StringBuilder shown = new StringBuilder();
+        while (m.find()) {
+            String url = m.group().replaceAll("[.,;:!?)]+$", "");
+            String display = url.replaceFirst("^https?://(www\\.)?", "");
+            if (display.length() > 25) display = display.substring(0, 22) + "...";
+            links.add(new String[]{display, url});
+            m.appendReplacement(shown, Matcher.quoteReplacement(display + m.group().substring(url.length())));
+        }
+        m.appendTail(shown);
+        return shown.toString();
+    }
+
+    /** What the platform counts against its limit: Bluesky the shortened links, Mastodon 23 per link. */
+    static int length(Platform pl, String text) {
+        String counted = switch (pl.id()) {
+            case "bluesky" -> shortenLinks(text, new ArrayList<>());
+            case "mastodon" -> text.replaceAll("https?://\\S+", "x".repeat(23));
+            default -> text;
+        };
+        return counted.codePointCount(0, counted.length());
     }
 
     /** Adds a facet over [from, to) and returns its feature, for the caller to fill in. */
@@ -414,12 +449,12 @@ public class SocialPosts {
                 pl.label(), pl.max(), p.title(), p.link(), article, who, pl.extra());
 
         String text = unwrapLinks(ask(key, prompt));
-        if (text.length() > pl.max()) {
-            text = unwrapLinks(ask(key, prompt + "\n\nYour previous answer was " + text.length() + " characters. The limit is "
-                    + pl.max() + ". Shorten it, keeping the link:\n" + text));
+        for (int attempt = 0; attempt < 3 && length(pl, text) > pl.max(); attempt++) {
+            text = unwrapLinks(ask(key, prompt + "\n\nYour previous answer counted " + length(pl, text) + " characters. The limit is "
+                    + pl.max() + ". Shorten it clearly below the limit, keeping the link:\n" + text));
         }
-        if (text.length() > pl.max()) {
-            throw new IllegalStateException(pl.label() + " text is " + text.length() + " characters, over " + pl.max());
+        if (length(pl, text) > pl.max()) {
+            throw new IllegalStateException(pl.label() + " text is " + length(pl, text) + " characters, over " + pl.max());
         }
         return text;
     }
