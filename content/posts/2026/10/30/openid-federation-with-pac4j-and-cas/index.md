@@ -1,6 +1,6 @@
 ---
 title: "OpenID Federation with pac4j and CAS"
-date: "2026-01-01"
+date: "2026-10-30"
 description: "Build an OpenID Federation with pac4j as the Java relying party and Apereo CAS as both OpenID Provider and trust anchor."
 authors:
   - "jerome-leleu"
