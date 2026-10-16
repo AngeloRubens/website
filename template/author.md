@@ -13,6 +13,10 @@
 #  The FOLDER NAME is the slug your posts reference in their `authors:` list,
 #  and it is also the URL: /today/author/<folder>/
 #
+#  An author is a REAL PERSON: your own name, a real photo of yourself (no
+#  logo) and at least one link below that lets us verify you. Company or team
+#  profiles are not accepted; writing for your employer is fine, say so in `bio`.
+#
 #  Include this in the same pull request as your first article.
 # ============================================================================
 title: "Your Name"
@@ -47,7 +51,8 @@ bio: ""
 # that stand alone; the name is already the page title.
 description: ""
 
-# Every link is optional; the profile only renders the ones that are set.
+# Set at least one that verifies you (github, linkedin, bluesky, ...); the
+# profile only renders the ones that are set.
 # Full URLs, not handles.
 bluesky: ""
 mastodon: ""

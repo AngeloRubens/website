@@ -26,8 +26,14 @@ images, and delivering it (pull request, fork, or zip).
   ordinary prose and what most articles use; AsciiDoc is worth it for captions
   on code blocks, numbered callouts inside a snippet, admonitions, and tables
   that span cells.
+- **Company-based and commercial articles are welcome if they are Java/OpenJDK/JVM-oriented**
+  — they need real, working Java example code or developer tooling, not just a product description.
+  Marketing-only submissions are declined.
 - New author? Add yourself as `content/authors/<your-slug>/_index.md` in the same
-  PR (note the underscore — see `template/author.md`).
+  PR (note the underscore — see `template/author.md`). **An author is a real
+  person**: a real photo of yourself as the avatar (no logos) and at least one
+  link we can verify you by (GitHub, LinkedIn, Bluesky, Mastodon, website).
+  Company or team profiles are not accepted.
 - **Leave `date:` as it is in the template.** A maintainer sets it and moves
   your folder to match when the article is published. Only set it yourself if
   you need the article out on a particular day: it's a plain day

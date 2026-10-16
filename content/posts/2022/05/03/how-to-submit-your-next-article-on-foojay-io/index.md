@@ -27,15 +27,26 @@ Foojay, the place for Friends Of OpenJDK, is a friendly community of Java and Ko
 
 In September 2026, Foojay.io moved from a WordPress system to a static site built with [Hugo](https://gohugo.io/) and published from a public GitHub repository, [github.com/foojayio/website](https://github.com/foojayio/website). See [Announcing the new Foojay](/today/announcing-the-new-foojay/) for the full story of that move, and why articles now go through a pull request instead of a login. Contributing an article means adding a small folder of files (your text and images) to that repository. You don't need to know Hugo — everything you need is in a ready-made template.
 
+## What we publish
+
+Foojay is about Java, not about who pays for the keyboard. **Articles about a company's product or service are welcome, as long as they are Java/OpenJDK/JVM/Developer-oriented**: a reader has to come away with something they can use:
+
+* Java example code (or Kotlin, or another JVM language)
+* Information about a tool that can improve developer work
+* Best practices, tips and tricks
+* ...
+
+The same goes for who is behind an article. **Every author profile is a real person**, with a real photo of themselves and links we can use to verify them: at least one of GitHub, LinkedIn, Bluesky, Mastodon or a personal website. Company, brand and team accounts (with a logo as the avatar) are not accepted. If you write for your employer, say so in your bio. Profiles we can't verify as a person are not merged.
+
 ## 1. Make sure you have an author profile
 
 Every article needs at least one author, and each author has a profile folder named with the author **slug**: `content/authors/<slug>/`. Your post's `authors:` frontmatter uses that slug. For example the profile `content/authors/frankdelporte/` is referenced as `authors: ["frankdelporte"]`.
 
 First, check whether your profile folder already exists under `content/authors/` — they are all listed there, one folder per author. If it does, use that folder name as your slug and move on to the next step.
 
-**If it doesn't exist yet, create it and include it in the same submission.** Make a folder `content/authors/<your-slug>/` (e.g. `content/authors/jane-doe/`) containing an `_index.md` — note the underscore, which is what lets the profile paginate a long article list. Start from `template/author.md`, which lists every field with a comment. At a minimum set `title` (your name) and a short `bio`, and add your social links (Bluesky, Mastodon, LinkedIn, GitHub, YouTube, website). Then use that folder name as the slug in your article's `authors:` list.
+**If it doesn't exist yet, create it and include it in the same submission.** Make a folder `content/authors/<your-slug>/` (e.g. `content/authors/jane-doe/`) containing an `_index.md` — note the underscore, which is what lets the profile paginate a long article list. Start from `template/author.md`, which lists every field with a comment. At a minimum set `title` (your own name, not a company's), a short `bio`, and at least one link that lets us verify you (GitHub, LinkedIn, Bluesky, Mastodon, YouTube or website); more is better. Then use that folder name as the slug in your article's `authors:` list.
 
-For your **profile picture**, drop the photo into the same folder and reference it by filename in the `avatar:` field. Everywhere the site shows one it is cropped to a **circle, from the middle of the image outwards**, so the ideal file is **square, 192 x 192 pixels, JPEG, under 30 KB**:
+For your **profile picture**, use a real photo of yourself, not a logo. Drop the photo into the same folder and reference it by filename in the `avatar:` field. Everywhere the site shows one it is cropped to a **circle, from the middle of the image outwards**, so the ideal file is **square, 192 x 192 pixels, JPEG, under 30 KB**:
 
 - **Square**, because the crop keeps the middle and discards the rest — on a portrait photo it is the top of your head and your shoulders that go. Crop it square yourself and you decide what stays, and leave a little room around your face, as the circle trims the corners too.
 - **JPEG** for a photo, and PNG only for a drawn or logo-style avatar with hard edges that JPEG makes look fuzzy. Not an SVG: your picture also goes into the page's structured data, which the tools that read it won't render.
