@@ -341,9 +341,9 @@ The server comparison above puts CN1's peak RSS at **`57.8 MiB`**, against **`11
 [Last week's iOS 27 theme](https://www.codenameone.com/blog/ios-27-glass-you-can-test/) still had motion I wasn't happy with. This comparison shows the refinement under taps, holds, and drags. Watch the original video; the small changes in timing and glass detail are the point.
 
 
-<video controls playsinline preload="metadata" poster="/blog/ios27-measured-glass/dark-poster.jpg" style="width:100%;height:auto" aria-label="iOS 27 tab bars: UIKit above Codename One">
-<source src="/blog/ios27-measured-glass/dark-tabs.mp4" type="video/mp4">
-<a href="/blog/ios27-measured-glass/dark-tabs.mp4">Watch the tab bar comparison</a>.
+<video controls playsinline preload="metadata" poster="https://www.codenameone.com/blog/ios27-measured-glass/dark-poster.jpg" style="width:100%;height:auto" aria-label="iOS 27 tab bars: UIKit above Codename One">
+<source src="https://www.codenameone.com/blog/ios27-measured-glass/dark-tabs.mp4" type="video/mp4">
+<a href="https://www.codenameone.com/blog/ios27-measured-glass/dark-tabs.mp4">Watch the tab bar comparison</a>.
 </video>
 
 
