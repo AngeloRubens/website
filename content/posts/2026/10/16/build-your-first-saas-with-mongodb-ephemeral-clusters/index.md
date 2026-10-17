@@ -86,7 +86,7 @@ I also give detailed instructions on how to set up the MongoDB Ephemeral Cluster
 - `connectionString` is the temporary database connection string. Your agent uses it to configure the Spring Boot backend so the API can create collections, insert sample data, and persist application changes from the first run.
 - `claimUrl` is for you, not the application. Keep it somewhere safe; it is the link you will use later to move a successful prototype into your Atlas organization.
 
-Do not paste either value into source files. Instead, have the agent put `MONGODB_URI` in a local `.env` file or your shell environment, add that file to `../../../../../../.gitignore`, and commit a `.env.example` containing only the variable name. This keeps the generated project reproducible without exposing the credentials that grant access to the ephemeral cluster.
+Do not paste either value into source files. Instead, have the agent put `MONGODB_URI` in a local `.env` file or your shell environment, add that file to `.gitignore`, and commit a `.env.example` containing only the variable name. This keeps the generated project reproducible without exposing the credentials that grant access to the ephemeral cluster.
 
 Copy the following prompt into your coding agent. It tells the agent to provision the cluster before it writes application code, inspect the response, preserve the claim URL, and use the connection string exclusively through `MONGODB_URI`.
 
@@ -263,7 +263,7 @@ It is provided in the original response used to create the ephemeral cluster in 
 {
   "claimUrl": "https://account-dev.mongodb.com/account/register?claimId=claimId",
   "clusterId": "clusterId",
-  "connectionString": "mongodb+srv://POexample:baSample@cluster0.1234zxy.mongodb-dev.net/",
+  "connectionString": "mongodb+srv://{username}:{password}@cluster0.1234zxy.mongodb-dev.net/",
   "expiresAt": "2026-09-05T13:21:35Z",
   "status": "ACTIVE",
   "termsOfService": "By using this API and any resources provisioned through it, you agree to be bound by MongoDB's Cloud Terms of Service at https://www.mongodb.com/legal/terms-and-conditions/cloud; and Privacy Policy at https://www.mongodb.com/legal/privacy/privacy-policy."

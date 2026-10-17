@@ -1,7 +1,7 @@
 ---
 title: "Apple Shouldn't Dictate Your App's Redesign Schedule"
 date: "2026-10-16"
-description: "Adopt Xcode 27 without moving your redesign schedule. This week: Liquid Glass, JPA inspired ORM, OpenTelemetry, WebSockets, push callbacks, and native..."
+description: "Adopt Xcode 27 without moving your redesign schedule. This week: Liquid Glass, a JPA inspired ORM, OpenTelemetry, WebSockets and push callbacks."
 authors: ["shai-almog"]
 image: "who-decides-your-app-redesign-e9b18f15b8.jpg"
 categories: ["Java"]
