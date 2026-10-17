@@ -1,5 +1,5 @@
 {
-  "generatedAt" : "2026-10-16T05:57:01Z",
+  "generatedAt" : "2026-10-17T05:41:38Z",
   "source" : "iCal feeds published by the JUGs themselves (data/jugs.yaml `calendar`) and Meetup's iCal export for the groups that use it; venues from the feed's LOCATION or the schema.org JSON-LD on the event page -- see scripts/fetch/JugEvents.java",
   "groups" : [ {
     "slug" : "almaty-java-user-group",
@@ -14,7 +14,15 @@
     "jug" : "AlpesJUG",
     "source" : "meetup",
     "url" : "https://www.meetup.com/alpesjug/",
-    "events" : [ ]
+    "events" : [ {
+      "title" : "Un outil pour les gouverner tous",
+      "url" : "https://www.meetup.com/alpesjug/events/317009119/",
+      "startTime" : "2026-10-27T19:00:00+01:00",
+      "endTime" : "2026-10-27T21:00:00+01:00",
+      "venue" : "29 Boulevard des Alpes",
+      "city" : "Meylan",
+      "online" : false
+    } ]
   }, {
     "slug" : "amsterdam-java-user-group",
     "name" : "Amsterdam Java User Group",
@@ -216,8 +224,8 @@
       "url" : "https://www.meetup.com/java-vienna/events/316166122/",
       "startTime" : "2026-10-19T18:00:00+02:00",
       "endTime" : "2026-10-19T21:00:00+02:00",
-      "venue" : null,
-      "city" : "Vienna",
+      "venue" : "Seminarraum \"Aargau\" (2. Stock)",
+      "city" : "Wien",
       "online" : false
     }, {
       "title" : "Going to DevFest Vienna",
@@ -400,8 +408,8 @@
       "url" : "https://www.jug-da.de/2026/10/Data-Oriented-Programming-und-Java-Secrets/",
       "startTime" : "2026-10-29T18:30:00+01:00",
       "endTime" : "2026-10-29T20:30:00+01:00",
-      "venue" : "tbd",
-      "city" : null,
+      "venue" : "h_da (Hochschule Darmstadt)",
+      "city" : "Darmstadt",
       "online" : null
     }, {
       "title" : "JUG DA: Global Day of Code Retreat Frankfurt",
@@ -708,6 +716,14 @@
       "venue" : null,
       "city" : null,
       "online" : false
+    }, {
+      "title" : "Von algebraischen Datentypen zu Pattern Matching überall",
+      "url" : "https://www.meetup.com/jug-nurnberg/events/317006791/",
+      "startTime" : "2026-10-28T18:00:00+01:00",
+      "endTime" : "2026-10-28T21:00:00+01:00",
+      "venue" : null,
+      "city" : null,
+      "online" : false
     } ]
   }, {
     "slug" : "jug-oberpfalz",
@@ -989,7 +1005,15 @@
     "jug" : "PeruJUG",
     "source" : "meetup",
     "url" : "https://www.meetup.com/Peru-Java-User-Group/",
-    "events" : [ ]
+    "events" : [ {
+      "title" : "JConf Peru 2026 - 28 Nov - La Conferencia para usuarios y desarrolladores Java",
+      "url" : "https://www.meetup.com/peru-java-user-group/events/317013493/",
+      "startTime" : "2026-11-28T08:00:00-05:00",
+      "endTime" : "2026-11-28T18:00:00-05:00",
+      "venue" : "Edificio Soho",
+      "city" : "Magdalena del Mar",
+      "online" : false
+    } ]
   }, {
     "slug" : "prague-java",
     "name" : "Prague Java User Group",
