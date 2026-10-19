@@ -1,13 +1,13 @@
 # Schedule a draft post for publication
 
-Foojay authors submit articles as a pull request that adds a folder to `draft/`.
+Foojay authors submit articles as a pull request that adds a folder to `../../../draft`.
 A maintainer reviews the article and gives it a publication date. This task
 covers that second half: take a reviewed draft, date it, and move it into
 `content/posts/`.
 
 A draft is a page bundle: a folder named for the article's URL slug, holding an
 `index.md` (or `index.adoc`), plus every image the article uses. The frontmatter
-carries the metadata. `draft/README.md` documents the shape for authors, and
+carries the metadata. `../../../draft/README.md` documents the shape for authors, and
 `template/post.md` is the starter file they copy.
 
 Hugo publishes a post on its `date`. A date in the future schedules it: Hugo
@@ -34,7 +34,7 @@ runs on every PR. It requires `title`, `description`, `authors`, `image` and
 Two things the validator does not check, so check them yourself and propose improvements if needed:
 
 * `categories`: at least one, and each one has to exist in
-  `template/categories.md`.
+  `../../../template/categories.md`.
 * `image`: check the image file exists, is in the bundle, and is not too large (see step 4). It should also be a .jpg or .png, not a .gif, .svg, or .webp. In that case, convert it, otherwise it will not be picked up by social media cards when the post is shared.
 * `related_posts`: four or more recent, genuinely related posts reads best. This
   is a house preference, not a rule that blocks a merge. Find related posts if none are included.
