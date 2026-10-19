@@ -1,6 +1,6 @@
 ---
 title: "What jstack Misses When Your Java Service Uses Virtual Threads"
-date: "2026-01-01"
+date: "2026-10-27"
 description: "A service with virtual threads can have thousands of requests waiting while jstack shows idle carriers. How to read Thread.dump_to_file instead, JDK 21 to 25."
 canonical: "https://dev.to/maschiojv/what-jstack-misses-when-your-java-service-uses-virtual-threads-23be"
 authors:
@@ -10,6 +10,11 @@ categories:
   - "Java"
   - "Java Core"
   - "Debugging"
+related_posts:
+  - "virtual-thread-pinning-field-guide"
+  - "masking-a-jvm-thread-dump-without-breaking-the-analysis"
+  - "benchmark-jdbc-connectors-and-java-21-virtual-threads"
+  - "java-virtual-threads-in-action-optimizing-mongodb-operation"
 ---
 
 Take a Spring Boot service with virtual threads enabled, a HikariCP pool of 10 connections, and roughly 5,000 requests in flight. Latency is climbing. You grab a thread dump and find 43 platform threads, most of the scheduler workers waiting in `ForkJoinPool.awaitWork`, and very little CPU activity.
