@@ -50,8 +50,10 @@
      gives no strip rather than an empty bar. */}}
 {{ with site.GetPage "/pages/what-is-foojay" }}
 <div class="home-intro">
-  <div class="shell">
+  <div class="shell home-intro__row">
     <p>{{ partial "meta-description.html" . }} <a href="{{ .RelPermalink }}">What is Foojay? &rarr;</a></p>
+    {{/* Beside the strapline, above the fold, where a subscriber looks. */}}
+    {{ partial "feed-link.html" site.Home }}
   </div>
 </div>
 {{ end }}
@@ -76,14 +78,10 @@
     </div>
 
     {{/* The pager is /today/'s own, so a reader lands straight on the page they
-         want instead of clicking through "View all" first. The feed sits
-         beside it: /index.xml is posts-only, exactly what this grid is. */}}
+         want instead of clicking through "View all" first. */}}
     {{ with site.GetPage "/posts" }}
       {{ partial "pagination.html" (dict "page" . "position" "bottom") }}
     {{ end }}
-    <p class="section-more">
-      {{ partial "feed-link.html" . }}
-    </p>
   </div>
 
   {{ partial "sidebar.html" . }}

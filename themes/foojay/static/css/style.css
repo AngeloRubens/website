@@ -665,6 +665,11 @@ body[data-nav-open="true"] .nav-backdrop { opacity: 1; visibility: visible; }
   margin: 0; padding: .72rem 0;
   font-size: .95rem; color: var(--ink-soft);
 }
+.home-intro__row {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; column-gap: 1.5rem;
+}
+.home-intro__row p { flex: 1 1 24rem; }
 /* nowrap so the link never breaks across lines away from its arrow. */
 .home-intro a { font-weight: 600; white-space: nowrap; }
 /* --------------------------------------------------- home: events strip -- */
