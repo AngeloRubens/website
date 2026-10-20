@@ -259,18 +259,24 @@ That way, even if a module is restored from cache, its artifact is also made ava
 To make this reliable with the build cache, we configured the Maven install goal to always run by adding the following XML to the **maven-build-cache-config.xml** file:
 
 ```xml
-<executionControl>
-  <runAlways>
-    <goalsLists>
-      <goalsList groupId="org.apache.maven.plugins"
-                 artifactId="maven-install-plugin">
-        <goals>
-          <goal>install</goal>
-        </goals>
-      </goalsList>
-    </goalsLists>
-  </runAlways>
-</executionControl>
+<!-- namespace declarations omitted for brevity -->
+<cache>
+  <configuration>
+    <!-- other config omitted for brevity -->
+    <executionControl>
+      <runAlways>
+        <goalsLists>
+          <goalsList groupId="org.apache.maven.plugins"
+                    artifactId="maven-install-plugin">
+            <goals>
+              <goal>install</goal>
+            </goals>
+          </goalsList>
+        </goalsLists>
+      </runAlways>
+    </executionControl>
+  </configuration>
+</cache>
 ```
 
 The build cache can still restore the expensive parts of the build, such as compilation, tests, and packaging.
