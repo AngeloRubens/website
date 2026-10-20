@@ -25,6 +25,10 @@ searchable until that day, and it shows up under "Coming soon" on the home page
 in the meantime. Write the day only, with no time — every post publishes at the
 one daily build (07:00 UTC), and a time can only delay it. See `template/post.md`.
 
+To preview a draft locally, run `hugo server` and either copy the folder into
+`content/posts/<year>/<month>/<day>/` with today's date, or give it a future
+`date:` and run `hugo server --buildFuture`. See `CONTRIBUTING.md`.
+
 See **How To Submit Your Next Article On Foojay.io** (/today/how-to-submit-your-next-article-on-foojay-io/)
 for the full guide, and `template/` for the starter files. This folder is outside
 `content/`, so drafts are not published until a maintainer moves them.

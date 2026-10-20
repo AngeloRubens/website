@@ -69,6 +69,8 @@ Each article lives in its own folder that holds an `index.md` file (your article
     - **JPEG** for photos and screenshots, and PNG only for hard-edged line art that JPEG makes look fuzzy. Not an SVG: social platforms won't render one, so your article would preview with the generic Foojay card instead of your own image.
     - **A still image on a solid background.** Cards and social previews don't animate, so point `image:` at a still frame and put an animated version in the article body instead. And a transparent background can disappear in dark mode, where cards paint their own colour behind the image.
 
+**Previewing is optional.** The pull request check builds the site for you. To see your article locally first, run `hugo server` and open `http://localhost:1313/website/today/your-slug/`. The `draft/` folder is not built, so either copy your folder into `content/posts/<year>/<month>/<day>/` using today's date (in the path and in `date:`), or keep a future `date:` and start the server with `hugo server --buildFuture`. Don't commit that copy.
+
 ## 3. Submit your article
 
 In order of preference:

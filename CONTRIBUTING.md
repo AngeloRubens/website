@@ -44,10 +44,15 @@ images, and delivering it (pull request, fork, or zip).
   home page).
 - You don't need to build anything: the PR check validates your frontmatter and
   builds the site, so it catches a bad author slug or a missing image for you.
-- If you *do* want to preview it, note that `draft/` is deliberately not built —
-  `hugo server -D` will not show it. Copy your folder to
-  `content/posts/<year>/<month>/<day>/<your-slug>/`, run `hugo server`, and open
-  `http://localhost:1313/website/today/<your-slug>/`.
+- If you *do* want to preview it, run `hugo server` and open
+  `http://localhost:1313/website/today/<your-slug>/`. `draft/` is deliberately
+  not built, so the post has to be somewhere Hugo looks. Either:
+  - copy your folder to `content/posts/<year>/<month>/<day>/<your-slug>/`,
+    with today's date (or an earlier one) in both the path and `date:` — a
+    future date is a scheduled post and is not built; or
+  - keep a future `date:` and start the server with `hugo server --buildFuture`.
+
+  Don't commit the copy: a maintainer does the move.
   Previewing an **AsciiDoc** post locally also needs the `asciidoctor` binary
   (`gem install asciidoctor`); without it Hugo stops with
   `failed to execute binary "asciidoctor"`. Nothing extra is needed for
