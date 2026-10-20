@@ -1,6 +1,6 @@
 ---
 title: "JCast Roundup: AI Agents, Clean Code, Cloud and Quarkus (Summer 2026)"
-date: "2026-01-01"
+date: "2026-10-24"
 description: "Six new JCast episodes from June to October 2026: AI hype and agents, clean code, cloud costs, Quarkus with Kevin Dubois, and meeting-heavy days."
 authors:
   - "oumaima-zerouali"
@@ -14,6 +14,8 @@ categories:
 related_posts:
   - "introducing-jcast-conversations-about-java-and-developer-life-in-dutch"
   - "foojay-podcast-100"
+  - "quarkus-unpacked-insights-from-the-foojay-podcast"
+  - "spring-quarkus-jooby-vertx-java-framework-comparison"
 ---
 
 Back in May, we [introduced JCast on Foojay](/today/introducing-jcast-conversations-about-java-and-developer-life-in-dutch/): a Dutch-language podcast about IT, dev life and soft skills, hosted by three Belgian developers, Oumaima Zerouali, Viktor Van Steenweghen and Maarten Casteels. Season 2 kicked off with Frank Delporte, and since then we have kept recording.
