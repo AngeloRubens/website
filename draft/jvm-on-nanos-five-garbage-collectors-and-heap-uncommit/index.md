@@ -41,7 +41,7 @@ We used that study as a starting point to answer two questions about [Nanos](htt
 
 The Akamas study provides a reference point: if collectors on Nanos exhibit behaviors and trade-offs similar to those described by Akamas, we have experimental evidence that the features exercised by this benchmark are supported.
 
-> **Results at a glance:** All five collectors run on Nanos and reproduce the trends observed by Akamas on Linux. Parallel GC reduces execution time by **20.7%** and peak heap usage by **38.2%** compared with G1. ZGC achieves pauses of approximately **0.04 ms**. Heap uncommit works on Nanos: G1 releases memory, and ZGC and Shenandoah also release memory when uncommit is enabled.
+> **Results at a glance:** All five collectors run on Nanos and reproduce most of the trends observed by Akamas on Linux; the exception is Serial, which is the fastest collector here rather than slower than G1. Parallel GC reduces execution time by **20.7%** and peak heap usage by **38.2%** compared with G1. ZGC achieves pauses of approximately **0.04 ms**. Heap uncommit works on Nanos: G1 releases memory, and ZGC and Shenandoah also release memory when uncommit is enabled.
 
 ## 1. Experimental Environment
 
@@ -172,7 +172,7 @@ The launcher sampled committed heap every 250 ms. The values summarize the avail
 
 **ZGC.** In a dedicated test with `-Xms1g -Xmx8g` and a shortened five-second uncommit delay, the log records **20 `Uncommitted` events**, ranging from 4 to 468 MB each, totaling approximately **7.7 GB of cumulative uncommit**. This is the sum of events over time, not 7.7 GB released simultaneously. Under continuous load, ZGC releases memory in chunks and recommits it during subsequent iterations, so committed heap fluctuates between 6.9 and 7.4 GB rather than falling toward 1 GB. This is consistent with a workload that does not become idle.
 
-**Shenandoah.** With `-Xms8g -Xmx8g`, the collector disables uncommit, as expected. In **one dedicated launch** with `-Xms1g -Xmx8g`, all 20 iterations completed in 359 seconds, and committed heap rose from 1.01 GB to a peak of 4.64 GB before returning to **1.00 GB**, the configured minimum. The log records **144 uncommit events**, ranging from 4 MB to 3.8 GB each, for approximately **41 GB of cumulative uncommit** over the execution. The same pages can be committed and released multiple times, so this does not mean that 41 GB of RAM was freed at once. Unlike ZGC, which releases and recommits memory in chunks under continuous load, Shenandoah brought committed heap back down to its minimum.
+**Shenandoah.** With `-Xms8g -Xmx8g`, the collector disables uncommit, as expected. In **one dedicated launch** with `-Xms1g -Xmx8g`, all 20 iterations completed in 359 seconds, and committed heap rose from 1.01 GB to a peak of 4.64 GB before returning to **1.00 GB**, the configured minimum; the final committed heap was 2.48 GB. The log records **144 uncommit events**, ranging from 4 MB to 3.8 GB each, for approximately **41 GB of cumulative uncommit** over the execution. The same pages can be committed and released multiple times, so this does not mean that 41 GB of RAM was freed at once. Unlike ZGC, which releases and recommits memory in chunks under continuous load, Shenandoah brought committed heap back down to its minimum.
 
 **The result: in the tests performed, G1, ZGC, and Shenandoah reduce committed heap on Nanos using standard JVM flags.** This verifies uncommit for the configurations and workloads measured, without extending the conclusion to every possible scenario.
 
