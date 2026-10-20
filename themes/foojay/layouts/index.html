@@ -75,10 +75,13 @@
       {{ end }}
     </div>
 
-    {{/* The feed sits beside "View all articles": the same offer by another
-         means, and /index.xml is posts-only, exactly what this grid is. */}}
+    {{/* The pager is /today/'s own, so a reader lands straight on the page they
+         want instead of clicking through "View all" first. The feed sits
+         beside it: /index.xml is posts-only, exactly what this grid is. */}}
+    {{ with site.GetPage "/posts" }}
+      {{ partial "pagination.html" (dict "page" . "position" "bottom") }}
+    {{ end }}
     <p class="section-more">
-      <a class="btn btn--ghost" href="{{ "today/" | relURL }}">View all articles</a>
       {{ partial "feed-link.html" . }}
     </p>
   </div>
