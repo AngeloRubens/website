@@ -51,7 +51,5 @@ Whether you need a professional code editor, a clean Kanban board, glass panels,
 
 ## Learn more
 
-You can explore Vitra and the accompanying material at:
-
-[skinning-javafx-applications.netlify.app](https://skinning-javafx-applications.netlify.app/)
-```
+You can explore Vitra and the accompanying material at
+[skinning-javafx-applications.netlify.app](https://skinning-javafx-applications.netlify.app/).
