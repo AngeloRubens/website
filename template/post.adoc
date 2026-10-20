@@ -14,6 +14,7 @@
 #   2. Fill in the frontmatter, write the article, drop images in the SAME
 #      folder next to this file.
 #   3. See `categories.md` next to this file for the category list.
+#   4. Optional preview: see "Running the site locally" in the repo README.md.
 #
 #  THE FRONTMATTER IS IDENTICAL to template/post.md -- same keys, same rules,
 #  same `---` fences, checked by the same job on your pull request. The notes

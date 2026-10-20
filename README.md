@@ -101,7 +101,8 @@ hugo server     # http://localhost:1313/website/
 Note that `draft/` is deliberately *not* built (that is what keeps unreviewed
 submissions unpublished), so to preview your own article, copy its folder to
 `content/posts/<year>/<month>/<day>/<your-slug>/` — the same move that publishes
-it.
+it — with today's date (or earlier) in the path and in `date:`. Or keep a future
+`date:` and run `hugo server --buildFuture`. Don't commit the copy.
 
 ## Under the hood
 

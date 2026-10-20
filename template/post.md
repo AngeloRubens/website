@@ -15,6 +15,8 @@
 #   3. See `categories.md` (next to this file) for the list of existing
 #      categories. Don't copy it into your own folder — it's just a reference.
 #      `README.md` there lists every starter template.
+#   4. Optional preview: see "Running the site locally" in the repo README.md
+#      (draft/ is not built; `hugo server --buildFuture` works with a future date).
 # ============================================================================
 
 # Article title. Rendered as the page H1 — do NOT repeat it as a "# " heading in
