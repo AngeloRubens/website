@@ -19,11 +19,11 @@ related_posts:
 
 The Java community thrives on sharing knowledge and experiences. Most content is in English, which works well for many developers. However, there's something special about discussing complex topics in your native language. The nuances. The humor. The ability to express yourself freely without translating your thoughts first.
 
-That's why we created JCast, a podcast for the Dutch-speaking developer community. Moreover, today we're excited to launch Season 2!
+That's why we created [JCast](https://jcast.dev), a podcast for the Dutch-speaking developer community. Moreover, today we're excited to launch Season 2!
 
 ## Season 2 Starts with Frank Delporte
 
-For our second season opener, we sat down with Frank Delporte. He's well-known in the Java community as a Java Champion. Additionally, he's a Java Developer, Technical Writer at Azul, Blogger, and Author of "Getting started with Java on Raspberry Pi". Furthermore, he's a Pi4J Contributor.
+For our second season opener, we sat down with [Frank Delporte](/today/author/frankdelporte/). He's well-known in the Java community as a [Java Champion](/java-champions/). Additionally, he's a Java Developer, Technical Writer at Azul, Blogger, and Author of "[Getting started with Java on Raspberry Pi](https://webtechie.be/books/#java-programming-for-raspberry-pi)". Furthermore, he's a [Pi4J](https://www.pi4j.com/) Contributor.
 
 In this episode, Frank shares his unique journey. From film school to Java Champion. His work on Pi4J. Making Java accessible on embedded devices like the Raspberry Pi. And his passion for documentation and CoderDojo.
 
@@ -41,11 +41,11 @@ We describe ourselves as "drie developers met een liefde voor code en een gezond
 
 ### Meet the Hosts
 
-**Oumaima Zerouali** is a developer who loves clarity and challenges. She's passionate about the 'why' behind systems and people. Backend, frontend, or cloud. She wants to understand it, master it, and make it better.
+[**Oumaima Zerouali**](https://www.linkedin.com/in/oumaima-zerouali-16b189223/) is a developer who loves clarity and challenges. She's passionate about the 'why' behind systems and people. Backend, frontend, or cloud. She wants to understand it, master it, and make it better.
 
-**Viktor Van Steenweghen** is a software engineer who lives for clean code and automation. He's a fan of AI tools and nerdy discussions. Always curious about new shortcuts.
+[**Viktor Van Steenweghen**](https://www.linkedin.com/in/viktorvansteenweghen/) is a software engineer who lives for clean code and automation. He's a fan of AI tools and nerdy discussions. Always curious about new shortcuts.
 
-**Maarten Casteels** is a pragmatic tech lead with a sharp eye for detail. He has a soft spot for good teamwork. He loves clean code, clear communication, and a bit of chaos from time to time.
+[**Maarten Casteels**](https://www.linkedin.com/in/maartencasteels/) is a pragmatic tech lead with a sharp eye for detail. He has a soft spot for good teamwork. He loves clean code, clear communication, and a bit of chaos from time to time.
 
 ### What We Talk About
 
