@@ -160,9 +160,9 @@ The launcher sampled committed heap every 250 ms. The values summarize the avail
 | G1 `-Xmx5g` | yes | 0.19 → 3.46 → 0.51 GB | 68 |
 | G1 `-Xms5g -Xmx5g` | no (`-Xms` = `-Xmx`) | 5.00 GB constant | 0 |
 | ZGC `-Xms1g -Xmx8g -XX:ZUncommitDelay=5` | yes (`Uncommit: Enabled`) | 1.00 → 7.42 → 6.94 GB | 20 log events |
-| ZGC `-Xms8g -Xmx8g` | no (`Uncommit: Implicitly Disabled (-Xms equals -Xmx)`) | 8.00 GB constant | 0 |
+| ZGC `-Xms8g -Xmx8g` | no (`Uncommit: Implicitly Disabled (-Xms equals -Xmx)`) | 8.00 GB constant | 0 log events |
 | Shenandoah `-Xms1g -Xmx8g` | yes | 1.01 → 4.64 → 1.00 GB (final: 2.48 GB) | 144 log events |
-| Shenandoah `-Xms8g -Xmx8g` | no (`Min heap equals to max heap, disabling ShenandoahUncommit`) | 8.00 GB constant | 0 |
+| Shenandoah `-Xms8g -Xmx8g` | no (`Min heap equals to max heap, disabling ShenandoahUncommit`) | 8.00 GB constant | 0 log events |
 
 ### Infographic 3 — Committed Heap in the Uncommit Tests
 
