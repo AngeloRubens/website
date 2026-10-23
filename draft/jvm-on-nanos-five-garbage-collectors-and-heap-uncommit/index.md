@@ -41,13 +41,13 @@ We used that study as a starting point to answer two questions about [Nanos](htt
 
 The Akamas study provides a reference point: if collectors on Nanos exhibit behaviors and trade-offs similar to those described by Akamas, we have experimental evidence that the features exercised by this benchmark are supported.
 
-> **Results at a glance:** All five collectors run on Nanos and reproduce the main trends observed by Akamas on Linux. As in the Akamas study, Parallel GC remains faster than G1, ZGC, and Shenandoah on Nanos, and uses less memory than G1: compared with G1 it reduces execution time by **20.7%** and peak heap usage by **38.2%**. ZGC achieves pauses of approximately **0.04 ms**. Heap uncommit works on Nanos: G1 releases memory, and ZGC and Shenandoah also release memory when uncommit is enabled.
+> **Results at a glance:** All five collectors run on Nanos and reproduce the main trends observed by Akamas on Linux. As in the Akamas study, Parallel GC is faster than G1 and uses less heap, reducing execution time by **20.7%** and peak heap usage by **38.2%**; on Nanos it is also faster than ZGC and Shenandoah. ZGC achieves pauses of approximately **0.04 ms**. Heap uncommit works on Nanos: G1 releases memory, and ZGC and Shenandoah also release memory when uncommit is enabled.
 
 ## 1. Experimental Environment
 
 | Component | Version or configuration |
 |---|---|
-| Unikernel | Nanos, built from master on October 10, 2026; run with Ops using the nightly image (`-n`/`--nightly`) |
+| Unikernel | Nanos nightly build (master) of October 10, 2026, downloaded by Ops with `-n`/`--nightly` |
 | JVM | Eclipse Temurin 25.0.1+8 JRE, Linux aarch64 |
 | Benchmark | Renaissance 0.16.2, `page-rank` |
 | Framework | Apache Spark, local mode |
