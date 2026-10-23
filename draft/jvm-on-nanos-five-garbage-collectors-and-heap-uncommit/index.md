@@ -47,7 +47,7 @@ The Akamas study provides a reference point: if collectors on Nanos exhibit beha
 
 | Component | Version or configuration |
 |---|---|
-| Unikernel | Nanos nightly build (master) of October 10, 2026, downloaded by Ops with `-n`/`--nightly` |
+| Unikernel | Nanos nightly build (master) of October 20, 2026, downloaded by Ops with `-n`/`--nightly` |
 | JVM | Eclipse Temurin 25.0.1+8 JRE, Linux aarch64 |
 | Benchmark | Renaissance 0.16.2, `page-rank` |
 | Framework | Apache Spark, local mode |
@@ -134,9 +134,9 @@ The comparison below is **strictly within the dedicated experiment**:
 |---|---:|---:|---:|
 | `-Xmx5g` | 8.74 s | 0.54 cores | 1.8–2.3 GB |
 | `-Xms5g -Xmx5g` | 8.28 s | 0.37 cores | 2.9–3.1 GB |
-| Difference | **−5.3%** | **−30.5%** | — |
+| Difference | **−5.3%** | **−31.5%** | — |
 
-Within this dedicated pair of measurements, setting `-Xms5g -Xmx5g` prevents heap uncommit and is associated with **5.3% shorter execution time** (8.74 → 8.28 s) and **30.5% lower GC CPU usage** (0.54 → 0.37 cores). The measured peak *used* heap is also higher (2.9–3.1 GB versus 1.8–2.3 GB); used heap must not be confused with committed heap. The results illustrate a workload-specific trade-off between allowing heap commitment to shrink and keeping a fixed committed heap. They do not, on their own, isolate the exact cost of recommit operations.
+Within this dedicated pair of measurements, setting `-Xms5g -Xmx5g` prevents heap uncommit and is associated with **5.3% shorter execution time** (8.74 → 8.28 s) and **31.5% lower GC CPU usage** (0.54 → 0.37 cores). The measured peak *used* heap is also higher (2.9–3.1 GB versus 1.8–2.3 GB); used heap must not be confused with committed heap. The results illustrate a workload-specific trade-off between allowing heap commitment to shrink and keeping a fixed committed heap. They do not, on their own, isolate the exact cost of recommit operations.
 
 ## 4. Uncommit: Reducing Committed Heap When Memory Is No Longer Needed
 
