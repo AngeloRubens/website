@@ -1,6 +1,6 @@
 ---
 title: "JVM on Nanos: Five Garbage Collectors, Same Trade-offs, and Working Heap Uncommit"
-date: "2026-01-01"
+date: "2026-10-23"
 description: "Testing five HotSpot garbage collectors and heap uncommit on Nanos, revisiting the Akamas study with Eclipse Temurin 25 and Renaissance."
 authors:
   - "angelo-rubini"
@@ -150,16 +150,16 @@ A JVM that does not uncommit memory may retain a substantial committed heap even
 
 In all cases, uncommit operates between `-Xms` and `-Xmx`: when `-Xms` equals `-Xmx`, the JVM does not release committed heap, as confirmed by the logs.
 
-The launcher sampled committed heap every 250 ms. The values summarize the available measurements; dedicated ZGC and Shenandoah tests also include events from GC logs. The “reductions” column counts drops in committed heap greater than 64 MB in a single launch, whereas the Shenandoah figure counts log events: **these counts are not directly comparable**.
+The launcher sampled committed heap every 250 ms. The values summarize the available measurements; dedicated ZGC and Shenandoah tests also include events from GC logs. The “reductions” column counts drops in committed heap greater than 64 MB in a single launch, whereas the ZGC and Shenandoah figures count `Uncommitted` events in the GC log: **these counts are not directly comparable**.
 
-| Collector and configuration | Uncommit enabled | Committed heap: initial → peak → minimum after peak | Reductions > 64 MB per launch |
+| Collector and configuration | Uncommit enabled | Committed heap: initial → peak → minimum after peak | Reductions > 64 MB per launch (G1) or GC log events (ZGC, Shenandoah) |
 |---|---|---|---:|
 | G1 `-Xmx2g` | yes (default) | 0.19 → 1.52 → 0.50 GB | 83 |
 | G1 `-Xmx3g` | yes | 0.19 → 2.25 → 0.50 GB | 86 |
 | G1 `-Xmx4g` | yes | 0.19 → 2.80 → 0.50 GB | 92 |
 | G1 `-Xmx5g` | yes | 0.19 → 3.46 → 0.51 GB | 68 |
 | G1 `-Xms5g -Xmx5g` | no (`-Xms` = `-Xmx`) | 5.00 GB constant | 0 |
-| ZGC `-Xms1g -Xmx8g -XX:ZUncommitDelay=5` | yes (`Uncommit: Enabled`) | 1.00 → 7.42 → 6.94 GB | 20 |
+| ZGC `-Xms1g -Xmx8g -XX:ZUncommitDelay=5` | yes (`Uncommit: Enabled`) | 1.00 → 7.42 → 6.94 GB | 20 log events |
 | ZGC `-Xms8g -Xmx8g` | no (`Uncommit: Implicitly Disabled (-Xms equals -Xmx)`) | 8.00 GB constant | 0 |
 | Shenandoah `-Xms1g -Xmx8g` | yes | 1.01 → 4.64 → 1.00 GB (final: 2.48 GB) | 144 log events |
 | Shenandoah `-Xms8g -Xmx8g` | no (`Min heap equals to max heap, disabling ShenandoahUncommit`) | 8.00 GB constant | 0 |
@@ -203,7 +203,7 @@ Each JVM launch uses a fresh Nanos instance, with flags passed through `JAVA_TOO
 
 - **Time:** mean duration of steady-state iterations.
 - **CPU:** cores used during the iterations.
-- **Memory:** peak heap usage.
+- **Memory:** peak heap usage, taken as the maximum of the samples collected every 250 ms; a short-lived peak between two samples would not be captured.
 - **Pauses:** time spent at GC safepoints.
 
 For the main collector comparison, reported values are medians across independent launches. The original study reports 95% confidence intervals; their numerical values are not included in this article. Dedicated uncommit tests are described separately and must not be confused with the three launches per collector used for the main comparison.
