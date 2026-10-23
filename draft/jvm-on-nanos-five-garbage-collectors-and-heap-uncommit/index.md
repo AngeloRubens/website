@@ -47,13 +47,15 @@ The Akamas study provides a reference point: if collectors on Nanos exhibit beha
 
 | Component | Version or configuration |
 |---|---|
-| Unikernel | Nanos, built from master on October 10, 2026 |
+| Unikernel | Nanos, built from master on October 10, 2026; run with Ops using the nightly image (`-n`/`--nightly`) |
 | JVM | Eclipse Temurin 25.0.1+8 JRE, Linux aarch64 |
 | Benchmark | Renaissance 0.16.2, `page-rank` |
 | Framework | Apache Spark, local mode |
 | Cloud | Oracle Cloud Infrastructure, `eu-milan-1` |
 | Instance | `VM.Standard.A1.Flex`, Ampere Altra ARM64, 2 OCPU, 12 GB RAM |
 | Collectors | Serial, Parallel, G1, ZGC, Shenandoah |
+
+Nanos was run through the `ops` command, using the `-n` (`--nightly`) option so that the nightly kernel image is downloaded instead of the latest release.
 
 The JVM is a standard HotSpot distribution for Linux aarch64: no changes to the collectors or to the JVM itself. Collectors are selected using standard flags.
 
