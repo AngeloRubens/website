@@ -1,5 +1,5 @@
 ---
-title: "JVM on Nanos: Five Garbage Collectors, Same Trade-offs, and Working Heap Uncommit"
+title: "JVM on Unikernel Nanos — GC trade-offs and heap uncommit"
 date: "2026-10-23"
 description: "Testing five HotSpot garbage collectors and heap uncommit on Nanos, revisiting the Akamas study with Eclipse Temurin 25 and Renaissance."
 authors:
